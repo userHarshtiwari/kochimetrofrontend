@@ -51,10 +51,10 @@ const Index = () => {
         {/* Hero Section */}
         <div className="text-center py-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white dark:text-white mb-4">
               Welcome to KMRL <span className="text-blue-600">RAGI</span> System
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 dark:text-gray-300 mb-8">
               AI-Powered Real-time Autonomous Guidance Intelligence for optimal train induction planning
             </p>
             <div className="flex justify-center gap-4">
@@ -80,29 +80,29 @@ const Index = () => {
           <Card className="text-center">
             <CardContent className="p-6">
               <Train className="w-8 h-8 mx-auto text-blue-600 mb-3" />
-              <div className="text-3xl font-bold text-gray-900">{systemOverview.trainsManaged}</div>
-              <div className="text-sm text-gray-600">Trains Managed</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white dark:text-white">{systemOverview.trainsManaged}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300 dark:text-gray-300">Trains Managed</div>
             </CardContent>
           </Card>
           <Card className="text-center">
             <CardContent className="p-6">
               <Brain className="w-8 h-8 mx-auto text-green-600 mb-3" />
-              <div className="text-3xl font-bold text-gray-900">{systemOverview.aiAccuracy}%</div>
-              <div className="text-sm text-gray-600">AI Accuracy</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">{systemOverview.aiAccuracy}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">AI Accuracy</div>
             </CardContent>
           </Card>
           <Card className="text-center">
             <CardContent className="p-6">
               <TrendingUp className="w-8 h-8 mx-auto text-purple-600 mb-3" />
-              <div className="text-3xl font-bold text-gray-900">{systemOverview.costSavings}%</div>
-              <div className="text-sm text-gray-600">Cost Savings</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">{systemOverview.costSavings}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Cost Savings</div>
             </CardContent>
           </Card>
           <Card className="text-center">
             <CardContent className="p-6">
               <Shield className="w-8 h-8 mx-auto text-orange-600 mb-3" />
-              <div className="text-3xl font-bold text-gray-900">{systemOverview.uptime}%</div>
-              <div className="text-sm text-gray-600">System Uptime</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">{systemOverview.uptime}%</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">System Uptime</div>
             </CardContent>
           </Card>
         </div>
@@ -120,8 +120,8 @@ const Index = () => {
                     <div className={`w-12 h-12 ${action.color} rounded-lg flex items-center justify-center text-white mb-3`}>
                       {action.icon}
                     </div>
-                    <div className="font-semibold text-gray-900">{action.title}</div>
-                    <div className="text-sm text-gray-600">{action.description}</div>
+                    <div className="font-semibold text-gray-900 dark:text-white">{action.title}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">{action.description}</div>
                   </div>
                 </Link>
               ))}
@@ -141,11 +141,11 @@ const Index = () => {
             <CardContent>
               <div className="space-y-4">
                 {recentAchievements.map((achievement, index) => (
-                  <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="mt-1">{achievement.icon}</div>
                     <div>
-                      <div className="font-semibold text-gray-900">{achievement.title}</div>
-                      <div className="text-sm text-gray-600">{achievement.description}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">{achievement.title}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">{achievement.description}</div>
                     </div>
                   </div>
                 ))}
@@ -163,10 +163,10 @@ const Index = () => {
             <CardContent>
               <div className="space-y-4">
                 {systemStats.map((stat, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div>
-                      <div className="font-semibold text-gray-900">{stat.label}</div>
-                      <div className="text-sm text-gray-600">{stat.sublabel}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white">{stat.label}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">{stat.sublabel}</div>
                     </div>
                     <div className="text-2xl font-bold text-blue-600">{stat.value}</div>
                   </div>

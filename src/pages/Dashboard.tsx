@@ -52,21 +52,21 @@ const Dashboard = () => {
   };
 
   const trains = [
-    { id: "KMRL-01", status: "service", location: "Aluva-Petta", mileage: 42150, health: 94, nextMaintenance: "3 days", priority: "low" },
-    { id: "KMRL-02", status: "maintenance", location: "Depot Bay A2", mileage: 38900, health: 76, nextMaintenance: "In Progress", priority: "high" },
-    { id: "KMRL-03", status: "service", location: "Petta-Aluva", mileage: 35200, health: 91, nextMaintenance: "7 days", priority: "low" },
-    { id: "KMRL-04", status: "standby", location: "Depot Bay C1", mileage: 41800, health: 88, nextMaintenance: "2 days", priority: "medium" },
-    { id: "KMRL-05", status: "service", location: "Aluva-Petta", mileage: 39500, health: 85, nextMaintenance: "1 day", priority: "medium" },
-    { id: "KMRL-06", status: "emergency", location: "JLN Stadium", mileage: 44200, health: 45, nextMaintenance: "Immediate", priority: "critical" },
-    { id: "KMRL-07", status: "service", location: "Petta-Aluva", mileage: 36800, health: 93, nextMaintenance: "5 days", priority: "low" },
-    { id: "KMRL-08", status: "maintenance", location: "Depot Bay B1", mileage: 43100, health: 78, nextMaintenance: "In Progress", priority: "high" }
+    { id: "KRISHNA", status: "service", location: "Aluva-Petta", mileage: 42150, health: 94, nextMaintenance: "3 days", priority: "low" },
+    { id: "TAPTI", status: "maintenance", location: "Depot Bay A2", mileage: 38900, health: 76, nextMaintenance: "In Progress", priority: "high" },
+    { id: "NILA", status: "service", location: "Petta-Aluva", mileage: 35200, health: 91, nextMaintenance: "7 days", priority: "low" },
+    { id: "SARAYU", status: "standby", location: "Depot Bay C1", mileage: 41800, health: 88, nextMaintenance: "2 days", priority: "medium" },
+    { id: "ARUTH", status: "service", location: "Aluva-Petta", mileage: 39500, health: 85, nextMaintenance: "1 day", priority: "medium" },
+    { id: "VAIGAI", status: "emergency", location: "JLN Stadium", mileage: 44200, health: 45, nextMaintenance: "Immediate", priority: "critical" },
+    { id: "JHANAVI", status: "service", location: "Petta-Aluva", mileage: 36800, health: 93, nextMaintenance: "5 days", priority: "low" },
+    { id: "DHWANIL", status: "maintenance", location: "Depot Bay B1", mileage: 43100, health: 78, nextMaintenance: "In Progress", priority: "high" }
   ];
 
   const alerts = [
-    { id: 1, train: "KMRL-06", type: "Critical", message: "Door mechanism failure", time: "14:23", status: "active" },
-    { id: 2, train: "KMRL-12", type: "Warning", message: "Brake pad wear 85%", time: "13:45", status: "active" },
-    { id: 3, train: "KMRL-03", type: "Info", message: "Scheduled maintenance due", time: "12:30", status: "pending" },
-    { id: 4, train: "KMRL-19", type: "Warning", message: "HVAC temperature variance", time: "11:15", status: "resolved" }
+    { id: 1, train: "VAIGAI", type: "Critical", message: "Door mechanism failure", time: "14:23", status: "active" },
+    { id: 2, train: "YAMUNA", type: "Warning", message: "Brake pad wear 85%", time: "13:45", status: "active" },
+    { id: 3, train: "NILA", type: "Info", message: "Scheduled maintenance due", time: "12:30", status: "pending" },
+    { id: 4, train: "NARMADA", type: "Warning", message: "HVAC temperature variance", time: "11:15", status: "resolved" }
   ];
 
   const punctualityData = [
@@ -81,16 +81,16 @@ const Dashboard = () => {
   ];
 
   const maintenanceSchedule = [
-    { train: "KMRL-08", type: "A-Check Service", technician: "Team Alpha", startTime: "22:00", duration: "6h", bay: "Bay A2", priority: "high" },
-    { train: "KMRL-15", type: "Brake Inspection", technician: "Team Beta", startTime: "23:30", duration: "3h", bay: "Bay B1", priority: "medium" },
-    { train: "KMRL-23", type: "HVAC Maintenance", technician: "Team Gamma", startTime: "01:00", duration: "4h", bay: "Bay C3", priority: "medium" },
-    { train: "KMRL-05", type: "Door System Check", technician: "Team Alpha", startTime: "02:30", duration: "2h", bay: "Bay A1", priority: "low" }
+    { train: "DHWANIL", type: "A-Check Service", technician: "Team Alpha", startTime: "22:00", duration: "6h", bay: "Bay A2", priority: "high" },
+    { train: "VAAYU", type: "Brake Inspection", technician: "Team Beta", startTime: "23:30", duration: "3h", bay: "Bay B1", priority: "medium" },
+    { train: "GODHAVARI", type: "HVAC Maintenance", technician: "Team Gamma", startTime: "01:00", duration: "4h", bay: "Bay C3", priority: "medium" },
+    { train: "ARUTH", type: "Door System Check", technician: "Team Alpha", startTime: "02:30", duration: "2h", bay: "Bay A1", priority: "low" }
   ];
 
   const brandingContracts = [
-    { advertiser: "Kerala Tourism", trains: ["KMRL-01", "KMRL-07", "KMRL-12"], hoursRequired: 120, hoursCompleted: 87, revenue: 850000, status: "active" },
-    { advertiser: "Cochin Shipyard", trains: ["KMRL-03", "KMRL-18"], hoursRequired: 80, hoursCompleted: 65, revenue: 450000, status: "active" },
-    { advertiser: "Federal Bank", trains: ["KMRL-09"], hoursRequired: 60, hoursCompleted: 58, revenue: 320000, status: "completing" }
+    { advertiser: "Kerala Tourism", trains: ["KRISHNA", "JHANAVI", "YAMUNA"], hoursRequired: 120, hoursCompleted: 87, revenue: 850000, status: "active" },
+    { advertiser: "Cochin Shipyard", trains: ["NILA", "PAMPA"], hoursRequired: 80, hoursCompleted: 65, revenue: 450000, status: "active" },
+    { advertiser: "Federal Bank", trains: ["BHAVANI"], hoursRequired: 60, hoursCompleted: 58, revenue: 320000, status: "completing" }
   ];
 
   const getStatusColor = (status: string) => {
@@ -119,8 +119,8 @@ const Dashboard = () => {
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">KMRL Operations Command Center</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">KMRL Operations Command Center</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-1">
               {currentShift} • {currentTime.toLocaleDateString()} • {currentTime.toLocaleTimeString()}
             </p>
           </div>
@@ -208,12 +208,12 @@ const Dashboard = () => {
               <CardContent>
                 <div className="space-y-3">
                   {trains.slice(0, 6).map((train) => (
-                    <div key={train.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div key={train.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className={`w-3 h-3 rounded-full ${getStatusColor(train.status)}`}></div>
                         <div>
                           <div className="font-semibold">{train.id}</div>
-                          <div className="text-sm text-gray-600">{train.location}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{train.location}</div>
                         </div>
                       </div>
                       <div className="text-right">
@@ -222,8 +222,8 @@ const Dashboard = () => {
                             {train.priority}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">Health: {train.health}%</div>
-                        <div className="text-sm text-gray-600">{train.mileage.toLocaleString()} km</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">Health: {train.health}%</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{train.mileage.toLocaleString()} km</div>
                       </div>
                     </div>
                   ))}
@@ -289,12 +289,12 @@ const Dashboard = () => {
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="font-semibold">{task.train}</div>
-                          <div className="text-sm text-gray-600">{task.type}</div>
-                          <div className="text-sm text-gray-500">{task.technician} • {task.bay}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{task.type}</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">{task.technician} • {task.bay}</div>
                         </div>
                         <div className="text-right">
                           <div className="text-sm font-semibold">{task.startTime}</div>
-                          <div className="text-sm text-gray-600">{task.duration}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{task.duration}</div>
                           <Badge variant="outline" className={`${getPriorityColor(task.priority)} text-white mt-1`}>
                             {task.priority}
                           </Badge>
@@ -313,21 +313,21 @@ const Dashboard = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                       <div className="text-2xl font-bold text-blue-600">4</div>
-                      <div className="text-sm text-gray-600">Scheduled Tonight</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Scheduled Tonight</div>
                     </div>
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                       <div className="text-2xl font-bold text-green-600">92%</div>
-                      <div className="text-sm text-gray-600">On-Time Completion</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">On-Time Completion</div>
                     </div>
-                    <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                    <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                       <div className="text-2xl font-bold text-yellow-600">2.8M</div>
-                      <div className="text-sm text-gray-600">Monthly Cost (₹)</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Monthly Cost (₹)</div>
                     </div>
-                    <div className="text-center p-4 bg-purple-50 rounded-lg">
+                    <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                       <div className="text-2xl font-bold text-purple-600">15</div>
-                      <div className="text-sm text-gray-600">Days Avg Cycle</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">Days Avg Cycle</div>
                     </div>
                   </div>
                 </div>
@@ -362,21 +362,21 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                     <div className="text-2xl font-bold text-green-600">{todayMetrics.avgSpeed}</div>
-                    <div className="text-sm text-gray-600">Avg Speed (km/h)</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">Avg Speed (km/h)</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                  <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <div className="text-2xl font-bold text-blue-600">{Math.round(todayMetrics.passengerCount/1000)}K</div>
-                    <div className="text-sm text-gray-600">Daily Passengers</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">Daily Passengers</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                     <div className="text-2xl font-bold text-purple-600">{todayMetrics.energyEfficiency}%</div>
-                    <div className="text-sm text-gray-600">Energy Efficiency</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">Energy Efficiency</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 rounded-lg">
+                  <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
                     <div className="text-2xl font-bold text-orange-600">₹{Math.round(todayMetrics.revenue/100000)/10}L</div>
-                    <div className="text-sm text-gray-600">Daily Revenue</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">Daily Revenue</div>
                   </div>
                 </div>
               </CardContent>
@@ -401,7 +401,7 @@ const Dashboard = () => {
                       <div className="flex justify-between items-start mb-3">
                         <div>
                           <div className="font-semibold text-lg">{contract.advertiser}</div>
-                          <div className="text-sm text-gray-600">Trains: {contract.trains.join(', ')}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Trains: {contract.trains.join(', ')}</div>
                         </div>
                         <Badge variant={contract.status === 'active' ? 'default' : 'secondary'}>
                           {contract.status}
@@ -409,16 +409,16 @@ const Dashboard = () => {
                       </div>
                       <div className="grid grid-cols-3 gap-4">
                         <div>
-                          <div className="text-sm text-gray-600">Exposure Progress</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Exposure Progress</div>
                           <Progress value={(contract.hoursCompleted / contract.hoursRequired) * 100} className="h-2 mt-1" />
                           <div className="text-sm mt-1">{contract.hoursCompleted}h / {contract.hoursRequired}h</div>
                         </div>
                         <div>
-                          <div className="text-sm text-gray-600">Revenue</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Revenue</div>
                           <div className="text-lg font-semibold">₹{contract.revenue.toLocaleString()}</div>
                         </div>
                         <div>
-                          <div className="text-sm text-gray-600">Completion Rate</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Completion Rate</div>
                           <div className="text-lg font-semibold">{Math.round((contract.hoursCompleted / contract.hoursRequired) * 100)}%</div>
                         </div>
                       </div>
@@ -443,9 +443,9 @@ const Dashboard = () => {
               <div className="space-y-3">
                 {alerts.map((alert) => (
                   <div key={alert.id} className={`p-4 rounded-lg border-l-4 ${
-                    alert.type === 'Critical' ? 'border-red-500 bg-red-50' :
-                    alert.type === 'Warning' ? 'border-yellow-500 bg-yellow-50' :
-                    'border-blue-500 bg-blue-50'
+                    alert.type === 'Critical' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+                    alert.type === 'Warning' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' :
+                    'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                   }`}>
                     <div className="flex justify-between items-start">
                       <div>
@@ -456,10 +456,10 @@ const Dashboard = () => {
                           </Badge>
                           <span className="font-semibold">{alert.train}</span>
                         </div>
-                        <div className="mt-1 text-gray-700">{alert.message}</div>
+                        <div className="mt-1 text-gray-700 dark:text-gray-300">{alert.message}</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm text-gray-600">{alert.time}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{alert.time}</div>
                         <Badge variant="outline" className={
                           alert.status === 'active' ? 'border-red-500' :
                           alert.status === 'resolved' ? 'border-green-500' :

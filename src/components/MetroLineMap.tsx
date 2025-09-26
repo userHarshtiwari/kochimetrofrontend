@@ -10,6 +10,7 @@ import {
   AlertTriangle,
   Clock
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface TrainLocation {
   id: string;
@@ -22,6 +23,7 @@ interface TrainLocation {
 }
 
 const MetroLineMap = () => {
+  const navigate = useNavigate();
   // All 22 stations of Kochi Metro Line 1 (Aluva to Petta)
   const stations = [
     { name: "Aluva", code: "ALV", x: 950, y: 100, isTerminal: true, isDepot: true },
@@ -48,22 +50,42 @@ const MetroLineMap = () => {
     { name: "Ernakulam Junction", code: "ERN", x: 120, y: 380 }
   ];
 
-  // Current train positions on the line
+  // KMRL Train Names mapping
+  const trainNames = {
+    "01": "KRISHNA", "02": "TAPTI", "03": "NILA", "04": "SARAYU", "05": "ARUTH",
+    "06": "VAIGAI", "07": "JHANAVI", "08": "DHWANIL", "09": "BHAVANI", "10": "PADMA",
+    "11": "MANDAKINI", "12": "YAMUNA", "13": "PERIYAR", "14": "KABANI", "15": "VAAYU",
+    "16": "KAVERI", "17": "SHIRIYA", "18": "PAMPA", "19": "NARMADA", "20": "MAHE",
+    "21": "MAARUT", "22": "SABARMATHI", "23": "GODHAVARI", "24": "GANGA", "25": "PAVAN"
+  };
+
+  // Current train positions on the line with real names
   const activeTrains: TrainLocation[] = [
-    { id: "KMRL-01", status: "service", currentStation: "Aluva", nextStation: "Pulinchodu", direction: "southbound", passengerLoad: 65, delay: 0 },
-    { id: "KMRL-03", status: "service", currentStation: "Edapally", nextStation: "Changampuzha Park", direction: "southbound", passengerLoad: 82, delay: 2 },
-    { id: "KMRL-05", status: "service", currentStation: "Petta", nextStation: "Thaikoodam", direction: "northbound", passengerLoad: 78, delay: 1 },
-    { id: "KMRL-07", status: "service", currentStation: "Kaloor", nextStation: "Town Hall", direction: "southbound", passengerLoad: 91, delay: 0 },
-    { id: "KMRL-09", status: "service", currentStation: "Vyttila Hub", nextStation: "Thaikoodam", direction: "southbound", passengerLoad: 55, delay: 0 },
-    { id: "KMRL-11", status: "service", currentStation: "CUSAT", nextStation: "Pathadipalam", direction: "southbound", passengerLoad: 43, delay: 0 },
-    { id: "KMRL-13", status: "service", currentStation: "Town Hall", nextStation: "Ernakulam South", direction: "southbound", passengerLoad: 89, delay: 3 },
-    { id: "KMRL-15", status: "service", currentStation: "Changampuzha Park", nextStation: "Palarivattom", direction: "southbound", passengerLoad: 67, delay: 0 },
-    { id: "KMRL-17", status: "service", currentStation: "Kalamassery", nextStation: "CUSAT", direction: "southbound", passengerLoad: 72, delay: 1 },
-    { id: "KMRL-06", status: "emergency", currentStation: "JLN Stadium", nextStation: "Kaloor", direction: "southbound", passengerLoad: 45, delay: 15 }
+    { id: "KRISHNA", status: "service", currentStation: "Aluva", nextStation: "Pulinchodu", direction: "southbound", passengerLoad: 65, delay: 0 },
+    { id: "NILA", status: "service", currentStation: "Edapally", nextStation: "Changampuzha Park", direction: "southbound", passengerLoad: 82, delay: 2 },
+    { id: "ARUTH", status: "service", currentStation: "Petta", nextStation: "Thaikoodam", direction: "northbound", passengerLoad: 78, delay: 1 },
+    { id: "JHANAVI", status: "service", currentStation: "Kaloor", nextStation: "Town Hall", direction: "southbound", passengerLoad: 91, delay: 0 },
+    { id: "BHAVANI", status: "service", currentStation: "Vyttila Hub", nextStation: "Thaikoodam", direction: "southbound", passengerLoad: 55, delay: 0 },
+    { id: "MANDAKINI", status: "service", currentStation: "CUSAT", nextStation: "Pathadipalam", direction: "southbound", passengerLoad: 43, delay: 0 },
+    { id: "PERIYAR", status: "service", currentStation: "Town Hall", nextStation: "Ernakulam South", direction: "southbound", passengerLoad: 89, delay: 3 },
+    { id: "VAAYU", status: "service", currentStation: "Changampuzha Park", nextStation: "Palarivattom", direction: "southbound", passengerLoad: 67, delay: 0 },
+    { id: "SHIRIYA", status: "service", currentStation: "Kalamassery", nextStation: "CUSAT", direction: "southbound", passengerLoad: 72, delay: 1 },
+    { id: "VAIGAI", status: "emergency", currentStation: "JLN Stadium", nextStation: "Kaloor", direction: "southbound", passengerLoad: 45, delay: 15 }
   ];
 
+  // Force a straight horizontal layout with evenly spaced stations
+  const baseY = 200;
+  const startX = 60;
+  const endX = 960;
+  const step = (endX - startX) / (stations.length - 1);
+  const linearStations = stations.map((s, i) => ({
+    ...s,
+    x: startX + i * step,
+    y: baseY
+  }));
+
   const getStationPosition = (stationName: string) => {
-    const station = stations.find(s => s.name === stationName);
+    const station = linearStations.find(s => s.name === stationName);
     return station ? { x: station.x, y: station.y } : { x: 0, y: 0 };
   };
 
@@ -88,7 +110,7 @@ const MetroLineMap = () => {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <Train className="w-5 h-5" />
-          Kochi Metro Line 1 - Live Train Tracking
+          Depot Map
         </CardTitle>
         <div className="flex gap-2">
           <Button variant="outline" size="sm">
@@ -105,56 +127,37 @@ const MetroLineMap = () => {
       <CardContent>
         {/* Map Legend */}
         <div className="mb-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
+          <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-            <span className="text-sm font-medium">In Service ({activeTrains.filter(t => t.status === 'service').length})</span>
+            <span className="text-sm font-medium dark:text-white">In Service ({activeTrains.filter(t => t.status === 'service').length})</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-red-50 rounded-lg">
+          <div className="flex items-center gap-2 p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
             <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-            <span className="text-sm font-medium">Emergency ({activeTrains.filter(t => t.status === 'emergency').length})</span>
+            <span className="text-sm font-medium dark:text-white">Emergency ({activeTrains.filter(t => t.status === 'emergency').length})</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+          <div className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
             <div className="w-4 h-4 bg-gray-500 rounded"></div>
-            <span className="text-sm font-medium">Stations (22)</span>
+            <span className="text-sm font-medium dark:text-white">Stations (22)</span>
           </div>
-          <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
+          <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="w-4 h-4 bg-blue-500 rounded"></div>
-            <span className="text-sm font-medium">Depot/Terminal</span>
+            <span className="text-sm font-medium dark:text-white">Depot/Terminal</span>
           </div>
         </div>
 
         {/* Metro Line Map */}
-        <div className="relative bg-gradient-to-br from-blue-50 to-green-50 rounded-lg p-6 min-h-[600px] overflow-auto">
-          <svg viewBox="0 0 1000 650" className="w-full h-full">
+        <div className="relative bg-gradient-to-br from-blue-50 to-green-50 dark:from-slate-900 dark:to-slate-800 rounded-lg p-6 min-h-[300px] overflow-auto">
+          <svg viewBox="0 0 1020 320" className="w-full h-full">
             {/* Background watermark */}
-            <text x="500" y="320" textAnchor="middle" className="text-6xl font-bold fill-blue-100 opacity-50">
+            <text x="510" y="160" textAnchor="middle" className="text-4xl font-bold fill-blue-100 dark:fill-slate-700 opacity-50">
               KOCHI METRO
             </text>
             
-            {/* Main Metro Line - Horizontal Section (Aluva to Changampuzha Park) */}
-            <line x1="230" y1="100" x2="950" y2="100" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            
-            {/* Vertical Section (Changampuzha Park to Palarivattom to JLN Stadium to Kaloor) */}
-            <line x1="230" y1="100" x2="180" y2="150" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="180" y1="150" x2="180" y2="250" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            
-            {/* Branch to Town Hall and Ernakulam South */}
-            <line x1="180" y1="250" x2="120" y2="300" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="120" y1="300" x2="120" y2="350" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            
-            {/* Branch to Maharaja's College */}
-            <line x1="180" y1="250" x2="80" y2="250" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            
-            {/* Southern Extension (Ernakulam Junction to Petta) */}
-            <line x1="120" y1="350" x2="120" y2="380" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="120" y1="380" x2="180" y2="400" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="180" y1="400" x2="240" y2="450" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="240" y1="450" x2="300" y2="500" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="300" y1="500" x2="400" y2="550" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
-            <line x1="400" y1="550" x2="500" y2="580" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
+            {/* Straight Main Metro Line */}
+            <line x1={startX} y1={baseY} x2={endX} y2={baseY} stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
 
             {/* Station Dots */}
-            {stations.map((station, index) => (
+            {linearStations.map((station, index) => (
               <g key={index}>
                 <circle 
                   cx={station.x} 
@@ -163,109 +166,28 @@ const MetroLineMap = () => {
                   fill={station.isTerminal ? "#3b82f6" : station.isDepot ? "#8b5cf6" : station.isHub ? "#f59e0b" : "#ffffff"}
                   stroke="#22c55e"
                   strokeWidth="3"
+                  className={station.name === "Muttom" ? "cursor-pointer hover:opacity-80" : undefined}
+                  onClick={station.name === "Muttom" ? () => navigate("/depot") : undefined}
                 />
-                {/* Station Labels */}
+                {/* Station Labels - alternate above/below to avoid overlap */}
                 <text 
                   x={station.x} 
-                  y={station.y - 20} 
+                  y={station.y + (index % 2 === 0 ? -22 : 26)} 
                   textAnchor="middle" 
-                  className="text-xs font-semibold fill-gray-800"
+                  className="text-[10px] font-semibold fill-gray-800 dark:fill-gray-100"
                 >
-                  {station.name}
+                  {station.name.length > 16 ? station.name.slice(0, 15) + '…' : station.name}
                 </text>
                 <text 
                   x={station.x} 
-                  y={station.y - 8} 
+                  y={station.y + (index % 2 === 0 ? -10 : 38)} 
                   textAnchor="middle" 
-                  className="text-xs fill-gray-600"
+                  className="text-[10px] fill-gray-600 dark:fill-gray-300"
                 >
                   {station.code}
                 </text>
               </g>
             ))}
-
-            {/* Live Train Positions */}
-            {activeTrains.map((train) => {
-              const position = getStationPosition(train.currentStation);
-              const offsetX = Math.random() * 20 - 10; // Random offset to avoid overlap
-              const offsetY = Math.random() * 20 - 10;
-              
-              return (
-                <g key={train.id}>
-                  {/* Train Icon */}
-                  <rect 
-                    x={position.x + offsetX - 15} 
-                    y={position.y + offsetY - 8} 
-                    width="30" 
-                    height="16" 
-                    rx="8" 
-                    fill={getTrainStatusColor(train.status)}
-                    stroke="#ffffff"
-                    strokeWidth="2"
-                    className="cursor-pointer"
-                  />
-                  {/* Train ID */}
-                  <text 
-                    x={position.x + offsetX} 
-                    y={position.y + offsetY + 2} 
-                    textAnchor="middle" 
-                    className="text-xs font-bold fill-white"
-                  >
-                    {train.id.split('-')[1]}
-                  </text>
-                  
-                  {/* Direction Arrow */}
-                  {train.direction === 'southbound' ? (
-                    <path 
-                      d={`M ${position.x + offsetX} ${position.y + offsetY + 12} l -3 -3 l 6 0 z`}
-                      fill={getTrainStatusColor(train.status)}
-                    />
-                  ) : (
-                    <path 
-                      d={`M ${position.x + offsetX} ${position.y + offsetY - 12} l -3 3 l 6 0 z`}
-                      fill={getTrainStatusColor(train.status)}
-                    />
-                  )}
-                  
-                  {/* Passenger Load Indicator */}
-                  <circle 
-                    cx={position.x + offsetX + 20} 
-                    cy={position.y + offsetY - 15} 
-                    r="8"
-                    fill={getPassengerLoadColor(train.passengerLoad)}
-                    className="opacity-80"
-                  />
-                  <text 
-                    x={position.x + offsetX + 20} 
-                    y={position.y + offsetY - 11} 
-                    textAnchor="middle" 
-                    className="text-xs font-bold fill-white"
-                  >
-                    {train.passengerLoad}
-                  </text>
-                  
-                  {/* Delay Indicator */}
-                  {train.delay > 0 && (
-                    <g>
-                      <circle 
-                        cx={position.x + offsetX - 20} 
-                        cy={position.y + offsetY - 15} 
-                        r="8"
-                        fill="#ef4444"
-                      />
-                      <text 
-                        x={position.x + offsetX - 20} 
-                        y={position.y + offsetY - 11} 
-                        textAnchor="middle" 
-                        className="text-xs font-bold fill-white"
-                      >
-                        {train.delay}
-                      </text>
-                    </g>
-                  )}
-                </g>
-              );
-            })}
 
             {/* Legend */}
             <g transform="translate(50, 550)">
@@ -293,13 +215,13 @@ const MetroLineMap = () => {
         {/* Train Status Details */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 dark:text-white">
               <Activity className="w-4 h-4" />
               Active Trains
             </h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {activeTrains.filter(train => train.status === 'service').slice(0, 6).map((train) => (
-                <div key={train.id} className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                <div key={train.id} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <div className="flex items-center gap-2">
                     <Train className="w-4 h-4 text-green-600" />
                     <span className="font-semibold">{train.id}</span>
@@ -321,13 +243,13 @@ const MetroLineMap = () => {
           </div>
           
           <div>
-            <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <h4 className="font-semibold mb-3 flex items-center gap-2 dark:text-white">
               <AlertTriangle className="w-4 h-4" />
               Issues & Delays
             </h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {activeTrains.filter(train => train.status === 'emergency' || train.delay > 0).map((train) => (
-                <div key={train.id} className="flex items-center justify-between p-2 bg-red-50 rounded-lg">
+                <div key={train.id} className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 text-red-600" />
                     <span className="font-semibold">{train.id}</span>
@@ -353,33 +275,33 @@ const MetroLineMap = () => {
 
         {/* Quick Stats */}
         <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="text-center p-3 bg-green-50 rounded-lg">
+          <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="text-2xl font-bold text-green-600">
               {activeTrains.filter(t => t.delay === 0).length}
             </div>
-            <div className="text-sm text-gray-600">On Time</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">On Time</div>
           </div>
-          <div className="text-center p-3 bg-yellow-50 rounded-lg">
+          <div className="text-center p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
             <div className="text-2xl font-bold text-yellow-600">
               {activeTrains.filter(t => t.delay > 0 && t.delay < 5).length}
             </div>
-            <div className="text-sm text-gray-600">Minor Delay</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">Minor Delay</div>
           </div>
-          <div className="text-center p-3 bg-red-50 rounded-lg">
+          <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
             <div className="text-2xl font-bold text-red-600">
               {activeTrains.filter(t => t.delay >= 5).length}
             </div>
-            <div className="text-sm text-gray-600">Major Delay</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">Major Delay</div>
           </div>
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
+          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">
               {Math.round(activeTrains.reduce((acc, train) => acc + train.passengerLoad, 0) / activeTrains.length)}%
             </div>
-            <div className="text-sm text-gray-600">Avg Load</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">Avg Load</div>
           </div>
-          <div className="text-center p-3 bg-purple-50 rounded-lg">
+          <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
             <div className="text-2xl font-bold text-purple-600">99.7%</div>
-            <div className="text-sm text-gray-600">Punctuality</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">Punctuality</div>
           </div>
         </div>
       </CardContent>

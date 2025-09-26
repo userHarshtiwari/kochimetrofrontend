@@ -1,4 +1,7 @@
 import { Layout } from "@/components/Layout";
+import EnhancedDepotMap from "@/components/DepotMap";
+import { useRef } from "react";
+import { useBay } from "@/contexts/BayContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +26,21 @@ import {
 } from "lucide-react";
 
 const DepotView = () => {
+  const { bayLayout } = useBay();
+  const bayLayoutRef = useRef<HTMLDivElement>(null);
+
+  const handleBayClick = (bayId: string) => {
+    // Scroll to the corresponding bay in the Bay Layout section
+    const bayElement = document.getElementById(`bay-${bayId}`);
+    if (bayElement) {
+      bayElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Add highlight effect
+      bayElement.classList.add('ring-2', 'ring-blue-500', 'bg-blue-50');
+      setTimeout(() => {
+        bayElement.classList.remove('ring-2', 'ring-blue-500', 'bg-blue-50');
+      }, 3000);
+    }
+  };
   const depotData = {
     name: "Muttom Depot",
     location: "Aluva, Kerala",
@@ -38,29 +56,6 @@ const DepotView = () => {
     }
   };
 
-  const bayLayout = [
-    // Service Bays (A-Section)
-    { id: "A-01", type: "service", train: "KMRL-01", status: "occupied", activity: "Standby", crew: "Team Alpha" },
-    { id: "A-02", type: "service", train: "KMRL-03", status: "occupied", activity: "Pre-service Check", crew: "Team Beta" },
-    { id: "A-03", type: "service", train: "KMRL-05", status: "occupied", activity: "Cleaning", crew: "Cleaning-1" },
-    { id: "A-04", type: "service", train: null, status: "available", activity: "Ready", crew: null },
-    { id: "A-05", type: "service", train: "KMRL-07", status: "occupied", activity: "Inspection", crew: "Team Gamma" },
-    
-    // Maintenance Bays (B-Section)
-    { id: "B-01", type: "maintenance", train: "KMRL-02", status: "occupied", activity: "A-Check Service", crew: "Maint-Alpha", duration: "6h" },
-    { id: "B-02", type: "maintenance", train: "KMRL-08", status: "occupied", activity: "Brake Repair", crew: "Maint-Beta", duration: "4h" },
-    { id: "B-03", type: "maintenance", train: "KMRL-12", status: "occupied", activity: "HVAC Service", crew: "Maint-Gamma", duration: "3h" },
-    { id: "B-04", type: "maintenance", train: null, status: "available", activity: "Ready", crew: null },
-    
-    // Inspection Bay Line (IBL)
-    { id: "IBL-1", type: "inspection", train: "KMRL-15", status: "occupied", activity: "Major Overhaul", crew: "IBL-Team", duration: "12h" },
-    { id: "IBL-2", type: "inspection", train: null, status: "available", activity: "Ready", crew: null },
-    
-    // Cleaning Bays (C-Section)
-    { id: "C-01", type: "cleaning", train: "KMRL-18", status: "occupied", activity: "Deep Clean", crew: "Clean-1" },
-    { id: "C-02", type: "cleaning", train: "KMRL-21", status: "occupied", activity: "Exterior Wash", crew: "Clean-2" },
-    { id: "C-03", type: "cleaning", train: null, status: "available", activity: "Ready", crew: null }
-  ];
 
   const staffSchedule = [
     { shift: "Night (22:00-06:00)", supervisor: "Rajesh Kumar", technicians: 12, cleaners: 6, security: 3, total: 21 },
@@ -86,11 +81,11 @@ const DepotView = () => {
   };
 
   const todayActivities = [
-    { time: "22:30", activity: "KMRL-02 entered Bay B-01 for A-Check", status: "in-progress" },
-    { time: "23:15", activity: "KMRL-15 major overhaul completed", status: "completed" },
-    { time: "00:45", activity: "KMRL-18 exterior cleaning started", status: "in-progress" },
+    { time: "22:30", activity: "TAPTI entered Bay B-01 for A-Check", status: "in-progress" },
+    { time: "23:15", activity: "VAAYU major overhaul completed", status: "completed" },
+    { time: "00:45", activity: "PAMPA exterior cleaning started", status: "in-progress" },
     { time: "01:20", activity: "Bay A-04 prepared for incoming train", status: "ready" },
-    { time: "02:00", activity: "Emergency repair on KMRL-08 brake system", status: "urgent" }
+    { time: "02:00", activity: "Emergency repair on DHWANIL brake system", status: "urgent" }
   ];
 
   const getBayStatusColor = (status: string) => {
@@ -117,19 +112,22 @@ const DepotView = () => {
       <Layout title="Depot Management">
 
       <div className="space-y-6">
+        {/* Enhanced Depot Map at top */}
+        <EnhancedDepotMap onBayClick={handleBayClick} />
+
         {/* Header Section */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{depotData.name} - Operations Center</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{depotData.name} - Operations Center</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-1">
               {depotData.location} • {depotData.area} • Operational since {depotData.operationalSince}
             </p>
             <div className="flex items-center gap-4 mt-2">
-              <Badge variant="outline" className="bg-blue-50">
+              <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20">
                 <MapPin className="w-4 h-4 mr-2" />
                 Capacity: {depotData.currentOccupancy}/{depotData.capacity}
               </Badge>
-              <Badge variant="outline" className="bg-green-50">
+              <Badge variant="outline" className="bg-green-50 dark:bg-green-900/20">
                 <Activity className="w-4 h-4 mr-2" />
                 Operational
               </Badge>
@@ -156,37 +154,37 @@ const DepotView = () => {
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-blue-600">{depotData.currentOccupancy}</div>
-              <div className="text-sm text-gray-600">Trains Present</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300 dark:text-gray-300">Trains Present</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-green-600">{bayLayout.filter(b => b.status === 'available').length}</div>
-              <div className="text-sm text-gray-600">Available Bays</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300 dark:text-gray-300">Available Bays</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-yellow-600">{bayLayout.filter(b => b.activity?.includes('Service') || b.activity?.includes('Repair')).length}</div>
-              <div className="text-sm text-gray-600">In Maintenance</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">In Maintenance</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-purple-600">{staffSchedule.find(s => s.shift.includes('Night'))?.total || 0}</div>
-              <div className="text-sm text-gray-600">Night Staff</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Night Staff</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-cyan-600">{environmentalMetrics.temperature}°C</div>
-              <div className="text-sm text-gray-600">Temperature</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Temperature</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-orange-600">{environmentalMetrics.powerConsumption}</div>
-              <div className="text-sm text-gray-600">Power (kW)</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Power (kW)</div>
             </CardContent>
           </Card>
         </div>
@@ -215,7 +213,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'service').map((bay) => (
-                      <div key={bay.id} className="p-3 border rounded-lg">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -225,8 +223,8 @@ const DepotView = () => {
                             {bay.train || 'Empty'}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">{bay.activity}</div>
-                        {bay.crew && <div className="text-xs text-gray-500">{bay.crew}</div>}
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{bay.activity}</div>
+                        {bay.crew && <div className="text-xs text-gray-500 dark:text-gray-400">{bay.crew}</div>}
                       </div>
                     ))}
                   </div>
@@ -244,7 +242,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'maintenance').map((bay) => (
-                      <div key={bay.id} className="p-3 border rounded-lg">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -254,8 +252,8 @@ const DepotView = () => {
                             {bay.train || 'Empty'}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">{bay.activity}</div>
-                        {bay.crew && <div className="text-xs text-gray-500">{bay.crew}</div>}
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{bay.activity}</div>
+                        {bay.crew && <div className="text-xs text-gray-500 dark:text-gray-400">{bay.crew}</div>}
                         {bay.duration && <div className="text-xs text-blue-600">Duration: {bay.duration}</div>}
                       </div>
                     ))}
@@ -274,7 +272,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'inspection').map((bay) => (
-                      <div key={bay.id} className="p-3 border rounded-lg">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -284,8 +282,8 @@ const DepotView = () => {
                             {bay.train || 'Empty'}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">{bay.activity}</div>
-                        {bay.crew && <div className="text-xs text-gray-500">{bay.crew}</div>}
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{bay.activity}</div>
+                        {bay.crew && <div className="text-xs text-gray-500 dark:text-gray-400">{bay.crew}</div>}
                         {bay.duration && <div className="text-xs text-blue-600">Duration: {bay.duration}</div>}
                       </div>
                     ))}
@@ -304,7 +302,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'cleaning').map((bay) => (
-                      <div key={bay.id} className="p-3 border rounded-lg">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -314,8 +312,8 @@ const DepotView = () => {
                             {bay.train || 'Empty'}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">{bay.activity}</div>
-                        {bay.crew && <div className="text-xs text-gray-500">{bay.crew}</div>}
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{bay.activity}</div>
+                        {bay.crew && <div className="text-xs text-gray-500 dark:text-gray-400">{bay.crew}</div>}
                       </div>
                     ))}
                   </div>
@@ -340,7 +338,7 @@ const DepotView = () => {
                       <div className="flex justify-between items-start mb-3">
                         <div>
                           <div className="font-semibold text-lg">{shift.shift}</div>
-                          <div className="text-gray-600">Supervisor: {shift.supervisor}</div>
+                          <div className="text-gray-600 dark:text-gray-300">Supervisor: {shift.supervisor}</div>
                         </div>
                         <Badge variant="outline" className="bg-blue-50">
                           Total: {shift.total} staff
@@ -349,19 +347,19 @@ const DepotView = () => {
                       <div className="grid grid-cols-4 gap-4">
                         <div className="text-center p-3 bg-gray-50 rounded">
                           <div className="text-xl font-bold text-blue-600">{shift.technicians}</div>
-                          <div className="text-sm text-gray-600">Technicians</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Technicians</div>
                         </div>
                         <div className="text-center p-3 bg-gray-50 rounded">
                           <div className="text-xl font-bold text-green-600">{shift.cleaners}</div>
-                          <div className="text-sm text-gray-600">Cleaners</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Cleaners</div>
                         </div>
                         <div className="text-center p-3 bg-gray-50 rounded">
                           <div className="text-xl font-bold text-purple-600">{shift.security}</div>
-                          <div className="text-sm text-gray-600">Security</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Security</div>
                         </div>
                         <div className="text-center p-3 bg-gray-50 rounded">
                           <div className="text-xl font-bold text-orange-600">1</div>
-                          <div className="text-sm text-gray-600">Supervisor</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Supervisor</div>
                         </div>
                       </div>
                     </div>
@@ -388,21 +386,21 @@ const DepotView = () => {
                         <div className="font-semibold">{equipment.equipment}</div>
                         <div className="text-right">
                           <div className="font-semibold text-green-600">{equipment.efficiency}%</div>
-                          <div className="text-sm text-gray-600">Efficiency</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">Efficiency</div>
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-4 mb-3">
                         <div className="text-center p-2 bg-blue-50 rounded">
                           <div className="font-bold text-blue-600">{equipment.total}</div>
-                          <div className="text-xs text-gray-600">Total</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-300">Total</div>
                         </div>
                         <div className="text-center p-2 bg-green-50 rounded">
                           <div className="font-bold text-green-600">{equipment.operational}</div>
-                          <div className="text-xs text-gray-600">Operational</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-300">Operational</div>
                         </div>
                         <div className="text-center p-2 bg-yellow-50 rounded">
                           <div className="font-bold text-yellow-600">{equipment.maintenance}</div>
-                          <div className="text-xs text-gray-600">Maintenance</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-300">Maintenance</div>
                         </div>
                       </div>
                       <Progress value={equipment.efficiency} className="h-2" />
@@ -461,15 +459,15 @@ const DepotView = () => {
                     <div className="text-4xl font-bold text-cyan-600 mb-2">
                       {environmentalMetrics.powerConsumption} kW
                     </div>
-                    <div className="text-gray-600 mb-4">Current Power Usage</div>
+                    <div className="text-gray-600 dark:text-gray-300 mb-4">Current Power Usage</div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-3 bg-blue-50 rounded">
                         <div className="font-bold text-blue-600">185 kW</div>
-                        <div className="text-sm text-gray-600">Daily Average</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">Daily Average</div>
                       </div>
                       <div className="p-3 bg-green-50 rounded">
                         <div className="font-bold text-green-600">92%</div>
-                        <div className="text-sm text-gray-600">Efficiency</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">Efficiency</div>
                       </div>
                     </div>
                   </div>
@@ -508,7 +506,7 @@ const DepotView = () => {
                             {activity.status}
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600">{activity.time}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{activity.time}</div>
                       </div>
                     </div>
                   ))}

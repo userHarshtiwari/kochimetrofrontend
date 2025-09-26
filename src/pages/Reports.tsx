@@ -183,7 +183,7 @@ const Reports = () => {
       case "error":
         return "bg-red-50 text-red-700";
       default:
-        return "bg-gray-50 text-gray-700";
+        return "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300";
     }
   };
 
@@ -193,10 +193,10 @@ const Reports = () => {
         {/* Header Section */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               Reports & Analytics Dashboard
             </h1>
-            <p className="text-gray-600 mt-1">
+            <p className="text-gray-600 dark:text-gray-300 mt-1">
               Comprehensive performance analytics and compliance tracking for{" "}
               {currentDate}
             </p>
