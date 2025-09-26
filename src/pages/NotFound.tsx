@@ -23,9 +23,9 @@ const NotFound = () => {
           {/* 404 Icon and Message */}
           <div className="mb-8">
             <AlertTriangle className="w-24 h-24 mx-auto text-yellow-500 mb-6" />
-            <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
-            <h2 className="text-2xl font-semibold text-gray-700 mb-2">Page Not Found</h2>
-            <p className="text-gray-600 mb-8">
+            <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
+            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Page Not Found</h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-8">
               The page you're looking for doesn't exist in the KMRL RAGI system.
               <br />
               It might have been moved, deleted, or you entered the wrong URL.
@@ -55,15 +55,15 @@ const NotFound = () => {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Search className="w-5 h-5 text-gray-600" />
+                <Search className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                 <h3 className="text-lg font-semibold">Suggested Pages</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {suggestedPages.map((page, index) => (
                   <Link key={index} to={page.link}>
                     <div className="p-4 border rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors text-left">
-                      <div className="font-semibold text-gray-900 mb-1">{page.title}</div>
-                      <div className="text-sm text-gray-600">{page.description}</div>
+                      <div className="font-semibold text-gray-900 dark:text-white mb-1">{page.title}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">{page.description}</div>
                     </div>
                   </Link>
                 ))}
@@ -72,7 +72,7 @@ const NotFound = () => {
           </Card>
 
           {/* System Status */}
-          <div className="mt-8 text-sm text-gray-500">
+          <div className="mt-8 text-sm text-gray-500 dark:text-gray-400">
             <p>KMRL RAGI System • All services operational • v2.3</p>
           </div>
         </div>

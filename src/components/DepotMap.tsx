@@ -11,6 +11,7 @@ import {
   CheckCircle,
   Clock
 } from "lucide-react";
+import { useBay } from "@/contexts/BayContext";
 
 interface TrainPosition {
   id: string;
@@ -21,31 +22,54 @@ interface TrainPosition {
   activity?: string;
 }
 
-const DepotMap = () => {
-  // Mock data for train positions in the depot
+interface DepotMapProps {
+  onBayClick?: (bayId: string) => void;
+}
+
+const DepotMap = ({ onBayClick }: DepotMapProps) => {
+  const { bayLayout } = useBay();
+  // Mock data for train positions in the depot with real KMRL train names
   const trainPositions: TrainPosition[] = [
     // Service Section (A-Bays)
-    { id: "KMRL-01", x: 100, y: 80, status: "service", bay: "A-01", activity: "Ready for Service" },
-    { id: "KMRL-03", x: 200, y: 80, status: "service", bay: "A-02", activity: "Pre-service Check" },
-    { id: "KMRL-05", x: 300, y: 80, status: "standby", bay: "A-03", activity: "Standby Ready" },
-    { id: "KMRL-07", x: 400, y: 80, status: "service", bay: "A-04", activity: "Boarding" },
-    { id: "KMRL-09", x: 500, y: 80, status: "service", bay: "A-05", activity: "Ready" },
+    { id: "KRISHNA", x: 100, y: 40, status: "service", bay: "A-01", activity: "Ready for Service" },
+    { id: "NILA", x: 200, y: 40, status: "service", bay: "A-02", activity: "Pre-service Check" },
+    { id: "ARUTH", x: 300, y: 40, status: "standby", bay: "A-03", activity: "Standby Ready" },
+    { id: "JHANAVI", x: 400, y: 40, status: "service", bay: "A-04", activity: "Boarding" },
+    { id: "BHAVANI", x: 500, y: 40, status: "service", bay: "A-05", activity: "Ready" },
     
     // Maintenance Section (B-Bays)
-    { id: "KMRL-02", x: 150, y: 200, status: "maintenance", bay: "B-01", activity: "A-Check Service" },
-    { id: "KMRL-08", x: 250, y: 200, status: "maintenance", bay: "B-02", activity: "Brake Repair" },
-    { id: "KMRL-12", x: 350, y: 200, status: "maintenance", bay: "B-03", activity: "HVAC Service" },
-    { id: "KMRL-15", x: 450, y: 200, status: "emergency", bay: "B-04", activity: "Emergency Repair" },
+    { id: "TAPTI", x: 150, y: 90, status: "maintenance", bay: "B-01", activity: "A-Check Service" },
+    { id: "DHWANIL", x: 250, y: 90, status: "maintenance", bay: "B-02", activity: "Brake Repair" },
+    { id: "YAMUNA", x: 350, y: 90, status: "maintenance", bay: "B-03", activity: "HVAC Service" },
+    { id: "VAAYU", x: 450, y: 90, status: "emergency", bay: "B-04", activity: "Emergency Repair" },
     
     // Inspection Bay Line (IBL)
-    { id: "KMRL-18", x: 200, y: 320, status: "maintenance", bay: "IBL-1", activity: "Major Overhaul" },
-    { id: "KMRL-21", x: 350, y: 320, status: "maintenance", bay: "IBL-2", activity: "Inspection" },
+    { id: "PAMPA", x: 200, y: 140, status: "maintenance", bay: "IBL-1", activity: "Major Overhaul" },
+    { id: "MAARUT", x: 350, y: 140, status: "maintenance", bay: "IBL-2", activity: "Inspection" },
     
     // Cleaning Section (C-Bays)
-    { id: "KMRL-14", x: 100, y: 440, status: "cleaning", bay: "C-01", activity: "Deep Cleaning" },
-    { id: "KMRL-17", x: 250, y: 440, status: "cleaning", bay: "C-02", activity: "Exterior Wash" },
-    { id: "KMRL-23", x: 400, y: 440, status: "cleaning", bay: "C-03", activity: "Interior Detail" }
+    { id: "KABANI", x: 100, y: 190, status: "cleaning", bay: "C-01", activity: "Deep Cleaning" },
+    { id: "SHIRIYA", x: 250, y: 190, status: "cleaning", bay: "C-02", activity: "Exterior Wash" },
+    { id: "GODHAVARI", x: 400, y: 190, status: "cleaning", bay: "C-03", activity: "Interior Detail" }
   ];
+
+  // Get bay occupancy from real data
+  const getBayStatus = (bayId: string) => {
+    if (!bayLayout) return { occupied: false, train: null };
+    
+    const bay = bayLayout.find(b => b.id === bayId);
+    if (!bay) return { occupied: false, train: null };
+    
+    return {
+      occupied: bay.status === 'occupied',
+      train: bay.train
+    };
+  };
+
+  const getBayColor = (bayId: string) => {
+    const bayStatus = getBayStatus(bayId);
+    return bayStatus.occupied ? '#3b82f6' : '#22c55e'; // Blue for occupied, Green for available
+  };
 
   const getTrainStatusColor = (status: string) => {
     switch (status) {
@@ -100,157 +124,135 @@ const DepotMap = () => {
         <div className="mb-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             {depotSections.map((section, index) => (
-              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <div 
                   className="w-4 h-4 rounded-full"
                   style={{ backgroundColor: section.color }}
                 ></div>
                 <div>
-                  <div className="font-semibold text-sm">{section.name}</div>
-                  <div className="text-xs text-gray-600">{section.count} trains</div>
+                  <div className="font-semibold text-sm dark:text-white">{section.name}</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-300">{section.count} trains</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Interactive Depot Map */}
-        <div className="relative bg-gray-100 rounded-lg p-4 min-h-[500px] overflow-auto">
-          {/* Depot Layout Background */}
-          <svg viewBox="0 0 600 500" className="w-full h-full">
-            {/* Service Section Background */}
-            <rect x="50" y="50" width="500" height="80" rx="8" fill="#f0f9ff" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,5" />
-            <text x="60" y="45" className="text-sm font-semibold fill-blue-600">Service Bays (A-Section)</text>
-            
-            {/* Maintenance Section Background */}
-            <rect x="100" y="170" width="400" height="80" rx="8" fill="#fffbeb" stroke="#f59e0b" strokeWidth="2" strokeDasharray="5,5" />
-            <text x="110" y="165" className="text-sm font-semibold fill-yellow-600">Maintenance Bays (B-Section)</text>
-            
-            {/* IBL Section Background */}
-            <rect x="150" y="290" width="300" height="80" rx="8" fill="#fef2f2" stroke="#ef4444" strokeWidth="2" strokeDasharray="5,5" />
-            <text x="160" y="285" className="text-sm font-semibold fill-red-600">Inspection Bay Line (IBL)</text>
-            
-            {/* Cleaning Section Background */}
-            <rect x="50" y="410" width="400" height="80" rx="8" fill="#faf5ff" stroke="#8b5cf6" strokeWidth="2" strokeDasharray="5,5" />
-            <text x="60" y="405" className="text-sm font-semibold fill-purple-600">Cleaning Bays (C-Section)</text>
-            
-            {/* Train Positions */}
-            {trainPositions.map((train) => (
-              <g key={train.id}>
-                {/* Train Representation */}
-                <rect 
-                  x={train.x - 15} 
-                  y={train.y - 10} 
-                  width="30" 
-                  height="20" 
-                  rx="4" 
-                  fill={getTrainStatusColor(train.status)}
-                  stroke="#ffffff"
-                  strokeWidth="2"
-                  className="cursor-pointer hover:opacity-80"
-                />
-                {/* Train ID */}
-                <text 
-                  x={train.x} 
-                  y={train.y + 2} 
-                  textAnchor="middle" 
-                  className="text-xs font-semibold fill-white"
-                >
-                  {train.id.split('-')[1]}
-                </text>
-                {/* Bay Label */}
-                <text 
-                  x={train.x} 
-                  y={train.y + 25} 
-                  textAnchor="middle" 
-                  className="text-xs fill-gray-600"
-                >
-                  {train.bay}
-                </text>
-              </g>
-            ))}
-            
-            {/* Depot Infrastructure */}
-            <text x="50" y="30" className="text-lg font-bold fill-gray-800">KMRL Muttom Depot - Live Status</text>
-            <text x="450" y="30" className="text-sm fill-gray-600">Updated: {new Date().toLocaleTimeString()}</text>
-          </svg>
-        </div>
-
-        {/* Train Status Details */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div>
-            <h4 className="font-semibold mb-3">Active Trains</h4>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {trainPositions.filter(train => train.status === 'service' || train.status === 'standby').map((train) => (
-                <div key={train.id} className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(train.status)}
-                    <span className="font-semibold">{train.id}</span>
-                    <Badge variant="outline">{train.bay}</Badge>
-                  </div>
-                  <span className="text-sm text-gray-600">{train.activity}</span>
-                </div>
-              ))}
-            </div>
+        {/* Clean Depot Map */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">KMRL Muttom Depot</h3>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Live Status</span>
           </div>
           
-          <div>
-            <h4 className="font-semibold mb-3">Maintenance & Issues</h4>
-            <div className="space-y-2 max-h-60 overflow-y-auto">
-              {trainPositions.filter(train => train.status === 'maintenance' || train.status === 'emergency' || train.status === 'cleaning').map((train) => (
-                <div key={train.id} className={`flex items-center justify-between p-2 rounded-lg ${
-                  train.status === 'emergency' ? 'bg-red-50' : 
-                  train.status === 'maintenance' ? 'bg-yellow-50' : 
-                  'bg-purple-50'
-                }`}>
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(train.status)}
-                    <span className="font-semibold">{train.id}</span>
-                    <Badge variant="outline">{train.bay}</Badge>
-                  </div>
-                  <span className="text-sm text-gray-600">{train.activity}</span>
-                </div>
-              ))}
+          {/* Bay Grid */}
+          <div className="space-y-3">
+            {/* Service Bays */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+              <h4 className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2">Service Bays</h4>
+              <div className="flex gap-2">
+                {["A-01", "A-02", "A-03", "A-04", "A-05"].map((bayId) => {
+                  const bayStatus = getBayStatus(bayId);
+                  return (
+                    <button
+                      key={bayId}
+                      onClick={() => onBayClick?.(bayId)}
+                      className={`w-8 h-8 rounded-full text-white text-xs font-bold hover:opacity-80 transition-colors ${
+                        bayStatus.occupied ? 'bg-blue-600' : 'bg-green-500'
+                      }`}
+                      title={bayStatus.occupied ? `Occupied by ${bayStatus.train}` : 'Available'}
+                    >
+                      {bayId.split('-')[1]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Maintenance Bays */}
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3">
+              <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-300 mb-2">Maintenance Bays</h4>
+              <div className="flex gap-2">
+                {["B-01", "B-02", "B-03", "B-04"].map((bayId) => {
+                  const bayStatus = getBayStatus(bayId);
+                  return (
+                    <button
+                      key={bayId}
+                      onClick={() => onBayClick?.(bayId)}
+                      className={`w-8 h-8 rounded-full text-white text-xs font-bold hover:opacity-80 transition-colors ${
+                        bayStatus.occupied ? 'bg-blue-600' : 'bg-green-500'
+                      }`}
+                      title={bayStatus.occupied ? `Occupied by ${bayStatus.train}` : 'Available'}
+                    >
+                      {bayId.split('-')[1]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Inspection Bays */}
+            <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-3">
+              <h4 className="text-sm font-medium text-red-800 dark:text-red-300 mb-2">Inspection Bay Line</h4>
+              <div className="flex gap-2">
+                {["IBL-1", "IBL-2"].map((bayId) => {
+                  const bayStatus = getBayStatus(bayId);
+                  return (
+                    <button
+                      key={bayId}
+                      onClick={() => onBayClick?.(bayId)}
+                      className={`w-8 h-8 rounded-full text-white text-xs font-bold hover:opacity-80 transition-colors ${
+                        bayStatus.occupied ? 'bg-blue-600' : 'bg-green-500'
+                      }`}
+                      title={bayStatus.occupied ? `Occupied by ${bayStatus.train}` : 'Available'}
+                    >
+                      {bayId.split('-')[1]}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Cleaning Bays */}
+            <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3">
+              <h4 className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2">Cleaning Bays</h4>
+              <div className="flex gap-2">
+                {["C-01", "C-02", "C-03"].map((bayId) => {
+                  const bayStatus = getBayStatus(bayId);
+                  return (
+                    <button
+                      key={bayId}
+                      onClick={() => onBayClick?.(bayId)}
+                      className={`w-8 h-8 rounded-full text-white text-xs font-bold hover:opacity-80 transition-colors ${
+                        bayStatus.occupied ? 'bg-blue-600' : 'bg-green-500'
+                      }`}
+                      title={bayStatus.occupied ? `Occupied by ${bayStatus.train}` : 'Available'}
+                    >
+                      {bayId.split('-')[1]}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div className="text-center p-3 bg-green-50 rounded-lg">
-            <div className="text-2xl font-bold text-green-600">
-              {trainPositions.filter(t => t.status === 'service').length}
-            </div>
-            <div className="text-sm text-gray-600">In Service</div>
+        {/* Status Legend */}
+        <div className="mt-4 flex items-center justify-center gap-6 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-blue-600"></div>
+            <span className="text-gray-600 dark:text-gray-300">Occupied</span>
           </div>
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">
-              {trainPositions.filter(t => t.status === 'standby').length}
-            </div>
-            <div className="text-sm text-gray-600">Standby</div>
-          </div>
-          <div className="text-center p-3 bg-yellow-50 rounded-lg">
-            <div className="text-2xl font-bold text-yellow-600">
-              {trainPositions.filter(t => t.status === 'maintenance').length}
-            </div>
-            <div className="text-sm text-gray-600">Maintenance</div>
-          </div>
-          <div className="text-center p-3 bg-red-50 rounded-lg">
-            <div className="text-2xl font-bold text-red-600">
-              {trainPositions.filter(t => t.status === 'emergency').length}
-            </div>
-            <div className="text-sm text-gray-600">Emergency</div>
-          </div>
-          <div className="text-center p-3 bg-purple-50 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">
-              {trainPositions.filter(t => t.status === 'cleaning').length}
-            </div>
-            <div className="text-sm text-gray-600">Cleaning</div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <span className="text-gray-600 dark:text-gray-300">Available</span>
           </div>
         </div>
+
       </CardContent>
     </Card>
   );
 };
 
 export default DepotMap;
+export type { DepotMapProps };

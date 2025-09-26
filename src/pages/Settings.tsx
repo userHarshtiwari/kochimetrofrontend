@@ -76,7 +76,7 @@ const Settings = () => {
       case 'connected': case 'active': case 'good': return 'bg-green-100 text-green-800';
       case 'partial': case 'warning': return 'bg-yellow-100 text-yellow-800';
       case 'disconnected': case 'inactive': case 'error': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200';
     }
   };
 
@@ -87,8 +87,8 @@ const Settings = () => {
         {/* Header Section */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">System Configuration & Settings</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">System Configuration & Settings</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-1">
               Manage user access, integrations, and system-wide configurations
             </p>
           </div>

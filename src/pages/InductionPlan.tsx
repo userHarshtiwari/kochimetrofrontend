@@ -44,24 +44,24 @@ const InductionPlan = () => {
   };
 
   const serviceTrains = [
-    { id: "KMRL-01", confidence: 96.2, healthScore: 94, mileage: 42150, brandingHours: 12, bay: "A1", reason: "Optimal health, branding commitment fulfilled" },
-    { id: "KMRL-03", confidence: 94.8, healthScore: 91, mileage: 35200, brandingHours: 8, bay: "A2", reason: "High reliability, balanced mileage" },
-    { id: "KMRL-05", confidence: 93.1, healthScore: 89, mileage: 39500, brandingHours: 15, bay: "A3", reason: "Good condition, commercial priority" },
-    { id: "KMRL-07", confidence: 95.5, healthScore: 93, mileage: 36800, brandingHours: 6, bay: "A4", reason: "Excellent health metrics" },
-    { id: "KMRL-09", confidence: 91.7, healthScore: 87, mileage: 41200, brandingHours: 10, bay: "B1", reason: "Adequate condition, route optimization" }
+    { id: "KRISHNA", confidence: 96.2, healthScore: 94, mileage: 42150, brandingHours: 12, bay: "A1", reason: "Optimal health, branding commitment fulfilled" },
+    { id: "NILA", confidence: 94.8, healthScore: 91, mileage: 35200, brandingHours: 8, bay: "A2", reason: "High reliability, balanced mileage" },
+    { id: "ARUTH", confidence: 93.1, healthScore: 89, mileage: 39500, brandingHours: 15, bay: "A3", reason: "Good condition, commercial priority" },
+    { id: "JHANAVI", confidence: 95.5, healthScore: 93, mileage: 36800, brandingHours: 6, bay: "A4", reason: "Excellent health metrics" },
+    { id: "BHAVANI", confidence: 91.7, healthScore: 87, mileage: 41200, brandingHours: 10, bay: "B1", reason: "Adequate condition, route optimization" }
   ];
 
   const standbyTrains = [
-    { id: "KMRL-11", confidence: 88.4, healthScore: 85, mileage: 43800, reason: "Scheduled for cleaning, backup ready", bay: "C1" },
-    { id: "KMRL-13", confidence: 87.2, healthScore: 82, mileage: 40100, reason: "Minor maintenance completed, reserve capacity", bay: "C2" },
-    { id: "KMRL-15", confidence: 89.6, healthScore: 86, mileage: 38900, reason: "Flexibility buffer, optimal positioning", bay: "C3" }
+    { id: "TAPTI", confidence: 88.4, healthScore: 85, mileage: 43800, reason: "Scheduled for cleaning, backup ready", bay: "C1" },
+    { id: "DHWANIL", confidence: 87.2, healthScore: 82, mileage: 40100, reason: "Minor maintenance completed, reserve capacity", bay: "C2" },
+    { id: "YAMUNA", confidence: 89.6, healthScore: 86, mileage: 38900, reason: "Flexibility buffer, optimal positioning", bay: "C3" }
   ];
 
   const maintenanceTrains = [
-    { id: "KMRL-02", priority: "High", type: "A-Check Service", duration: "6h", bay: "IBL-1", issue: "15,000 km maintenance due", cost: 85000 },
-    { id: "KMRL-06", priority: "Critical", type: "Door System Repair", duration: "4h", bay: "IBL-2", issue: "Door mechanism failure", cost: 120000 },
-    { id: "KMRL-12", priority: "Medium", type: "HVAC Maintenance", duration: "3h", bay: "IBL-3", issue: "Temperature control issues", cost: 45000 },
-    { id: "KMRL-18", priority: "High", type: "Brake Inspection", duration: "5h", bay: "IBL-4", issue: "Brake pad replacement", cost: 75000 }
+    { id: "VAAYU", priority: "High", type: "A-Check Service", duration: "6h", bay: "IBL-1", issue: "15,000 km maintenance due", cost: 85000 },
+    { id: "PAMPA", priority: "Critical", type: "Door System Repair", duration: "4h", bay: "IBL-2", issue: "Door mechanism failure", cost: 120000 },
+    { id: "MAARUT", priority: "Medium", type: "HVAC Maintenance", duration: "3h", bay: "IBL-3", issue: "Temperature control issues", cost: 45000 },
+    { id: "KABANI", priority: "High", type: "Brake Inspection", duration: "5h", bay: "IBL-4", issue: "Brake pad replacement", cost: 75000 }
   ];
 
   const aiInsights = [
@@ -89,12 +89,12 @@ const InductionPlan = () => {
         {/* Header Section */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">AI-Powered Induction Planning</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">AI-Powered Induction Planning</h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-1">
               Intelligent train deployment optimization for {currentTime.toLocaleDateString()}
             </p>
             <div className="flex items-center gap-4 mt-2">
-              <Badge variant="outline" className="bg-green-50">
+              <Badge variant="outline" className="bg-green-50 dark:bg-green-900/20">
                 <Brain className="w-4 h-4 mr-2" />
                 AI Model: RAGI v2.3
               </Badge>
@@ -125,27 +125,27 @@ const InductionPlan = () => {
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-green-600">{inductionPlan.confidence}%</div>
-              <div className="text-sm text-gray-600">AI Confidence</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">AI Confidence</div>
               <Progress value={inductionPlan.confidence} className="mt-2 h-2" />
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-blue-600">{inductionPlan.optimizationScore}%</div>
-              <div className="text-sm text-gray-600">Optimization Score</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Optimization Score</div>
               <Progress value={inductionPlan.optimizationScore} className="mt-2 h-2" />
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-purple-600">₹{Math.round(inductionPlan.estimatedSavings/1000)}K</div>
-              <div className="text-sm text-gray-600">Est. Daily Savings</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Est. Daily Savings</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <div className="text-3xl font-bold text-orange-600">{inductionPlan.totalTrains}</div>
-              <div className="text-sm text-gray-600">Total Fleet</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Total Fleet</div>
             </CardContent>
           </Card>
         </div>
@@ -174,14 +174,14 @@ const InductionPlan = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {serviceTrains.map((train) => (
-                      <div key={train.id} className="p-3 border rounded-lg bg-green-50">
+                      <div key={train.id} className="p-3 border rounded-lg bg-green-50 dark:bg-green-900/20">
                         <div className="flex justify-between items-start mb-2">
                           <div className="font-semibold">{train.id}</div>
-                          <Badge variant="outline" className="bg-white">
+                          <Badge variant="outline" className="bg-white dark:bg-gray-800">
                             {train.confidence}% confident
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600 mb-2">{train.reason}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">{train.reason}</div>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div>Health: {train.healthScore}%</div>
                           <div>Bay: {train.bay}</div>
@@ -190,7 +190,7 @@ const InductionPlan = () => {
                         </div>
                       </div>
                     ))}
-                    <div className="text-center text-sm text-gray-600 py-2">
+                    <div className="text-center text-sm text-gray-600 dark:text-gray-300 py-2">
                       + 13 additional trains assigned to service
                     </div>
                   </div>
@@ -208,14 +208,14 @@ const InductionPlan = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {standbyTrains.map((train) => (
-                      <div key={train.id} className="p-3 border rounded-lg bg-blue-50">
+                      <div key={train.id} className="p-3 border rounded-lg bg-blue-50 dark:bg-blue-900/20">
                         <div className="flex justify-between items-start mb-2">
                           <div className="font-semibold">{train.id}</div>
-                          <Badge variant="outline" className="bg-white">
+                          <Badge variant="outline" className="bg-white dark:bg-gray-800">
                             {train.confidence}% confident
                           </Badge>
                         </div>
-                        <div className="text-sm text-gray-600 mb-2">{train.reason}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">{train.reason}</div>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div>Health: {train.healthScore}%</div>
                           <div>Bay: {train.bay}</div>
@@ -239,7 +239,7 @@ const InductionPlan = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {maintenanceTrains.map((train) => (
-                      <div key={train.id} className="p-3 border rounded-lg bg-yellow-50">
+                      <div key={train.id} className="p-3 border rounded-lg bg-yellow-50 dark:bg-yellow-900/20">
                         <div className="flex justify-between items-start mb-2">
                           <div className="font-semibold">{train.id}</div>
                           <Badge variant={train.priority === 'Critical' ? 'destructive' : 'default'}>
@@ -247,7 +247,7 @@ const InductionPlan = () => {
                           </Badge>
                         </div>
                         <div className="text-sm font-medium mb-1">{train.type}</div>
-                        <div className="text-sm text-gray-600 mb-2">{train.issue}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">{train.issue}</div>
                         <div className="grid grid-cols-2 gap-2 text-xs">
                           <div>Duration: {train.duration}</div>
                           <div>Bay: {train.bay}</div>
@@ -275,10 +275,10 @@ const InductionPlan = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {aiInsights.map((insight, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <div>
                           <div className="font-semibold">{insight.metric}</div>
-                          <div className="text-sm text-gray-600">{insight.confidence}% confidence</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{insight.confidence}% confidence</div>
                         </div>
                         <div className="text-right">
                           <div className={`text-lg font-bold ${insight.prediction.includes('+') ? 'text-green-600' : 'text-blue-600'}`}>
@@ -342,7 +342,7 @@ const InductionPlan = () => {
                       }`}></div>
                       <div className="flex-1">
                         <div className="font-semibold">{constraint.constraint}</div>
-                        <div className="text-sm text-gray-600">{constraint.details}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{constraint.details}</div>
                       </div>
                       <Badge variant={
                         constraint.status === 'satisfied' ? 'default' :
@@ -369,9 +369,9 @@ const InductionPlan = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <Zap className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                  <Zap className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
                   <h3 className="text-lg font-semibold mb-2">What-If Simulation Engine</h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Interactive scenario planning and optimization sandbox coming soon.
                   </p>
                   <Button variant="outline">
@@ -394,9 +394,9 @@ const InductionPlan = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                  <Calendar className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Historical Analysis Dashboard</h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Track induction plan performance, accuracy metrics, and continuous improvement.
                   </p>
                   <Button variant="outline">

@@ -5,24 +5,35 @@ import {
   Building, 
   ClipboardList, 
   FileText, 
-  Settings 
+  Settings,
+  Wrench
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navigationItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/trains", label: "Train Details", icon: Train },
   { to: "/depot", label: "Depot View", icon: Building },
+  { to: "/jobs", label: "Job Management", icon: Wrench, supervisorOnly: true },
   { to: "/induction", label: "Induction Plan", icon: ClipboardList },
   { to: "/reports", label: "Reports & Audit", icon: FileText },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/settings", label: "Settings", icon: Settings, adminOnly: true },
 ];
 
 export const Navigation = () => {
+  const { user } = useAuth();
+
+  const filteredItems = navigationItems.filter(item => {
+    if (item.supervisorOnly && user?.role !== 'supervisor') return false;
+    if (item.adminOnly && user?.role !== 'admin') return false;
+    return true;
+  });
+
   return (
     <nav className="w-64 bg-card border-r border-border p-4 shadow-card">
       <div className="space-y-2">
-        {navigationItems.map((item) => (
+        {filteredItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

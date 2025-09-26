@@ -36,9 +36,18 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const TrainFleet = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTrain, setSelectedTrain] = useState("KMRL-01");
+  const [selectedTrain, setSelectedTrain] = useState("KRISHNA");
 
-  // Generate 25 trains data
+  // KMRL Train Names mapping
+  const trainNames = [
+    "KRISHNA", "TAPTI", "NILA", "SARAYU", "ARUTH",
+    "VAIGAI", "JHANAVI", "DHWANIL", "BHAVANI", "PADMA",
+    "MANDAKINI", "YAMUNA", "PERIYAR", "KABANI", "VAAYU",
+    "KAVERI", "SHIRIYA", "PAMPA", "NARMADA", "MAHE",
+    "MAARUT", "SABARMATHI", "GODHAVARI", "GANGA", "PAVAN"
+  ];
+
+  // Generate 25 trains data with real KMRL train names
   const generateFleetData = () => {
     const statuses = ["active", "maintenance", "inactive"];
     const locations = [
@@ -50,12 +59,11 @@ const TrainFleet = () => {
     const cleaningStatuses = ["clean", "pending", "dirty"];
     
     return Array.from({ length: 25 }, (_, i) => {
-      const trainNumber = String(i + 1).padStart(2, '0');
       const isActive = Math.random() > 0.3;
       const hasIssues = Math.random() > 0.7;
       
       return {
-        id: `KMRL-${trainNumber}`,
+        id: trainNames[i],
         model: "Alstom Metropolis",
         status: isActive ? (Math.random() > 0.8 ? "maintenance" : "active") : "inactive",
         location: locations[Math.floor(Math.random() * locations.length)],
@@ -114,7 +122,7 @@ const TrainFleet = () => {
       case "active": return "bg-green-100 text-green-800 border-green-200";
       case "maintenance": return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "inactive": return "bg-red-100 text-red-800 border-red-200";
-      default: return "bg-gray-100 text-gray-800 border-gray-200";
+      default: return "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600";
     }
   };
 
@@ -129,7 +137,7 @@ const TrainFleet = () => {
       case "clean": return "text-green-600";
       case "pending": return "text-yellow-600";
       case "dirty": return "text-red-600";
-      default: return "text-gray-600";
+      default: return "text-gray-600 dark:text-gray-300";
     }
   };
 
@@ -154,28 +162,28 @@ const TrainFleet = () => {
     <Layout title="Train Fleet Management">
       <div className="flex h-screen overflow-hidden">
         {/* Left Sidebar - Train List */}
-        <div className="w-96 border-r border-gray-200 flex flex-col bg-gray-50">
+        <div className="w-96 border-r border-gray-200 dark:border-gray-700 flex flex-col bg-gray-50 dark:bg-gray-900">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200 bg-white">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Fleet Overview</h2>
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Fleet Overview</h2>
             
             {/* Fleet Stats */}
             <div className="grid grid-cols-2 gap-2 mb-4">
-              <div className="text-center p-2 bg-blue-50 rounded">
+              <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
                 <div className="text-lg font-bold text-blue-600">{fleetStats.total}</div>
-                <div className="text-xs text-gray-600">Total</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Total</div>
               </div>
-              <div className="text-center p-2 bg-green-50 rounded">
+              <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
                 <div className="text-lg font-bold text-green-600">{fleetStats.active}</div>
-                <div className="text-xs text-gray-600">Active</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Active</div>
               </div>
-              <div className="text-center p-2 bg-yellow-50 rounded">
+              <div className="text-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
                 <div className="text-lg font-bold text-yellow-600">{fleetStats.maintenance}</div>
-                <div className="text-xs text-gray-600">Maintenance</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Maintenance</div>
               </div>
-              <div className="text-center p-2 bg-red-50 rounded">
+              <div className="text-center p-2 bg-red-50 dark:bg-red-900/20 rounded">
                 <div className="text-lg font-bold text-red-600">{fleetStats.critical}</div>
-                <div className="text-xs text-gray-600">Critical</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Critical</div>
               </div>
             </div>
 
@@ -198,7 +206,7 @@ const TrainFleet = () => {
                 <Card 
                   key={train.id} 
                   className={`cursor-pointer transition-all hover:shadow-md ${
-                    selectedTrain === train.id ? 'ring-2 ring-blue-500 bg-blue-50' : 'hover:bg-gray-50'
+                    selectedTrain === train.id ? 'ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
                   }`}
                   onClick={() => setSelectedTrain(train.id)}
                 >
@@ -263,10 +271,10 @@ const TrainFleet = () => {
               {/* Train Header */}
               <div className="flex justify-between items-start">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                     {currentTrain.id} - Detailed Analysis
                   </h1>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     {currentTrain.model} • {currentTrain.location}
                   </p>
                   <div className="flex items-center gap-4 mt-3">
@@ -494,6 +502,132 @@ const TrainFleet = () => {
                         <div className="text-sm text-gray-600">
                           Next service in {component.nextService} days
                         </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Fitness Certificate Details */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Fitness Certificate Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Certificate Number</span>
+                          <span className="font-mono text-sm">FC-{currentTrain.id}-2024-001</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Issued Date</span>
+                          <span>{currentTrain.fitnessExpiry}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Valid Until</span>
+                          <span className={currentTrain.fitnessValid ? 'text-green-600' : 'text-red-600'}>
+                            {new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Issuing Authority</span>
+                          <span>KMRL Safety Department</span>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Safety Rating</span>
+                          <span className="font-bold text-green-600">A+</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Last Inspection</span>
+                          <span>{currentTrain.lastMaintenance}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Next Inspection</span>
+                          <span>{currentTrain.nextMaintenance}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <span className="font-medium">Compliance Status</span>
+                          <Badge variant={currentTrain.fitnessValid ? 'default' : 'destructive'}>
+                            {currentTrain.fitnessValid ? 'Compliant' : 'Non-Compliant'}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Past Work History */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="w-5 h-5" />
+                    Past Work History
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        date: "2024-01-15",
+                        type: "A-Check Service",
+                        duration: "6h",
+                        technician: "Team Alpha",
+                        status: "completed",
+                        bay: "A-01",
+                        description: "Complete A-check service with brake inspection and door mechanism test"
+                      },
+                      {
+                        date: "2024-01-08",
+                        type: "Deep Cleaning",
+                        duration: "3h",
+                        technician: "Cleaning Team-1",
+                        status: "completed",
+                        bay: "C-02",
+                        description: "Interior and exterior deep cleaning with sanitization"
+                      },
+                      {
+                        date: "2024-01-02",
+                        type: "Brake Repair",
+                        duration: "4h",
+                        technician: "Emergency Team",
+                        status: "completed",
+                        bay: "B-01",
+                        description: "Hydraulic brake system repair and testing"
+                      },
+                      {
+                        date: "2023-12-28",
+                        type: "Monthly Inspection",
+                        duration: "2h",
+                        technician: "Inspection Team",
+                        status: "completed",
+                        bay: "A-03",
+                        description: "Comprehensive safety inspection and compliance check"
+                      }
+                    ].map((work, index) => (
+                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <div className="flex items-center gap-4">
+                          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+                            <Wrench className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <div className="font-semibold">{work.type}</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-300">{work.description}</div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              {work.date} • {work.duration} • {work.technician} • {work.bay}
+                            </div>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+                          {work.status}
+                        </Badge>
                       </div>
                     ))}
                   </div>
