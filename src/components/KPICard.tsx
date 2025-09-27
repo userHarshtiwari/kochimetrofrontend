@@ -12,6 +12,8 @@ interface KPICardProps {
     value: string;
     isPositive: boolean;
   };
+  onClick?: () => void;
+  clickable?: boolean;
 }
 
 export const KPICard = ({ 
@@ -20,7 +22,9 @@ export const KPICard = ({
   subtitle, 
   icon, 
   variant = "default",
-  trend 
+  trend,
+  onClick,
+  clickable = false
 }: KPICardProps) => {
   const getVariantClasses = () => {
     switch (variant) {
@@ -49,7 +53,14 @@ export const KPICard = ({
   };
 
   return (
-    <Card className={cn("shadow-card hover:shadow-elevated transition-all duration-200", getVariantClasses())}>
+    <Card 
+      className={cn(
+        "shadow-card transition-all duration-200", 
+        getVariantClasses(),
+        clickable && "hover:shadow-elevated cursor-pointer hover:scale-105"
+      )}
+      onClick={onClick}
+    >
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex-1">

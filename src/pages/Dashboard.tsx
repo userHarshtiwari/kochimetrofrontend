@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
 import { 
   Train, 
   Wrench, 
@@ -34,6 +36,10 @@ const Dashboard = () => {
   const currentTime = new Date();
   const currentShift = currentTime.getHours() >= 6 && currentTime.getHours() < 22 ? "Day Shift" : "Night Shift";
   
+  // State for modals
+  const [fleetInServiceOpen, setFleetInServiceOpen] = useState(false);
+  const [maintenanceOpen, setMaintenanceOpen] = useState(false);
+  
   const fleetData = {
     total: 25,
     inService: 18,
@@ -52,14 +58,39 @@ const Dashboard = () => {
   };
 
   const trains = [
+    // 18 Trains in Service
     { id: "KRISHNA", status: "service", location: "Aluva-Petta", mileage: 42150, health: 94, nextMaintenance: "3 days", priority: "low" },
-    { id: "TAPTI", status: "maintenance", location: "Depot Bay A2", mileage: 38900, health: 76, nextMaintenance: "In Progress", priority: "high" },
     { id: "NILA", status: "service", location: "Petta-Aluva", mileage: 35200, health: 91, nextMaintenance: "7 days", priority: "low" },
-    { id: "SARAYU", status: "standby", location: "Depot Bay C1", mileage: 41800, health: 88, nextMaintenance: "2 days", priority: "medium" },
     { id: "ARUTH", status: "service", location: "Aluva-Petta", mileage: 39500, health: 85, nextMaintenance: "1 day", priority: "medium" },
-    { id: "VAIGAI", status: "emergency", location: "JLN Stadium", mileage: 44200, health: 45, nextMaintenance: "Immediate", priority: "critical" },
     { id: "JHANAVI", status: "service", location: "Petta-Aluva", mileage: 36800, health: 93, nextMaintenance: "5 days", priority: "low" },
-    { id: "DHWANIL", status: "maintenance", location: "Depot Bay B1", mileage: 43100, health: 78, nextMaintenance: "In Progress", priority: "high" }
+    { id: "BHAVANI", status: "service", location: "Vyttila Hub-Thaikoodam", mileage: 41200, health: 89, nextMaintenance: "4 days", priority: "low" },
+    { id: "MANDAKINI", status: "service", location: "CUSAT-Pathadipalam", mileage: 37800, health: 87, nextMaintenance: "6 days", priority: "low" },
+    { id: "PERIYAR", status: "service", location: "Town Hall-Ernakulam South", mileage: 40100, health: 92, nextMaintenance: "2 days", priority: "medium" },
+    { id: "VAAYU", status: "service", location: "Changampuzha Park-Palarivattom", mileage: 36500, health: 88, nextMaintenance: "8 days", priority: "low" },
+    { id: "SHIRIYA", status: "service", location: "Kalamassery-CUSAT", mileage: 38900, health: 90, nextMaintenance: "3 days", priority: "low" },
+    { id: "KABANI", status: "service", location: "Edapally-Changampuzha Park", mileage: 37400, health: 86, nextMaintenance: "5 days", priority: "medium" },
+    { id: "KAVERI", status: "service", location: "Palarivattom-JLN Stadium", mileage: 39200, health: 91, nextMaintenance: "4 days", priority: "low" },
+    { id: "PAMPA", status: "service", location: "Kaloor-Town Hall", mileage: 38100, health: 89, nextMaintenance: "6 days", priority: "low" },
+    { id: "NARMADA", status: "service", location: "JLN Stadium-Kaloor", mileage: 39600, health: 87, nextMaintenance: "3 days", priority: "medium" },
+    { id: "MAHE", status: "service", location: "Ernakulam South-Kadavanthra", mileage: 40300, health: 92, nextMaintenance: "7 days", priority: "low" },
+    { id: "MAARUT", status: "service", location: "Kadavanthra-Elamkulam", mileage: 37700, health: 88, nextMaintenance: "2 days", priority: "medium" },
+    { id: "SABARMATHI", status: "service", location: "Elamkulam-Vyttila Hub", mileage: 38400, health: 90, nextMaintenance: "5 days", priority: "low" },
+    { id: "GODHAVARI", status: "service", location: "Vyttila Hub-Thaikoodam", mileage: 39800, health: 93, nextMaintenance: "4 days", priority: "low" },
+    { id: "GANGA", status: "service", location: "Thaikoodam-Petta", mileage: 40500, health: 91, nextMaintenance: "6 days", priority: "low" },
+    { id: "PAVAN", status: "service", location: "Petta-Thaikoodam", mileage: 37200, health: 89, nextMaintenance: "3 days", priority: "low" },
+    
+    // 4 Trains in Maintenance
+    { id: "TAPTI", status: "maintenance", location: "Depot Bay A2", mileage: 38900, health: 76, nextMaintenance: "In Progress", priority: "high" },
+    { id: "DHWANIL", status: "maintenance", location: "Depot Bay B1", mileage: 43100, health: 78, nextMaintenance: "In Progress", priority: "high" },
+    { id: "YAMUNA", status: "maintenance", location: "Depot Bay A3", mileage: 40200, health: 82, nextMaintenance: "In Progress", priority: "medium" },
+    { id: "PADMA", status: "maintenance", location: "Depot Bay B2", mileage: 41500, health: 79, nextMaintenance: "In Progress", priority: "high" },
+    
+    // 2 Trains Standby
+    { id: "SARAYU", status: "standby", location: "Depot Bay C1", mileage: 41800, health: 88, nextMaintenance: "2 days", priority: "medium" },
+    { id: "BHAVANI", status: "standby", location: "Depot Bay C2", mileage: 42500, health: 85, nextMaintenance: "1 day", priority: "medium" },
+    
+    // 1 Train Emergency
+    { id: "VAIGAI", status: "emergency", location: "JLN Stadium", mileage: 44200, health: 45, nextMaintenance: "Immediate", priority: "critical" }
   ];
 
   const alerts = [
@@ -145,6 +176,8 @@ const Dashboard = () => {
           icon={<Train className="w-5 h-5" />}
           variant="success"
           trend={{ value: "+2", isPositive: true }}
+          clickable={true}
+          onClick={() => setFleetInServiceOpen(true)}
         />
         <KPICard
           title="Punctuality Rate"
@@ -158,6 +191,8 @@ const Dashboard = () => {
           value={fleetData.maintenance.toString()}
           icon={<Wrench className="w-5 h-5" />}
           variant="warning"
+          clickable={true}
+          onClick={() => setMaintenanceOpen(true)}
         />
         <KPICard
           title="Emergency Issues"
@@ -476,6 +511,132 @@ const Dashboard = () => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Fleet in Service Modal */}
+      <Dialog open={fleetInServiceOpen} onOpenChange={setFleetInServiceOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Train className="w-5 h-5" />
+              Fleet in Service Details
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-green-600">{trains.filter(train => train.status === 'service').length}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Active Trains</div>
+              </div>
+              <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">{trains.filter(train => train.status === 'standby').length}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Standby</div>
+              </div>
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className="text-2xl font-bold text-gray-600">{trains.filter(train => train.status === 'maintenance' || train.status === 'emergency').length}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Maintenance/Emergency</div>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <h4 className="font-semibold text-lg">Active Trains ({trains.filter(train => train.status === 'service').length})</h4>
+              <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {trains.filter(train => train.status === 'service').map((train) => (
+                    <div key={train.id} className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <div>
+                          <div className="font-semibold">{train.id}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{train.location}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-semibold">Health: {train.health}%</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{train.mileage.toLocaleString()} km</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Next: {train.nextMaintenance}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Maintenance Modal */}
+      <Dialog open={maintenanceOpen} onOpenChange={setMaintenanceOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Wrench className="w-5 h-5" />
+              Maintenance Details
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-yellow-600">{fleetData.maintenance}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">In Maintenance</div>
+              </div>
+              <div className="text-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-red-600">{fleetData.emergency}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Emergency</div>
+              </div>
+              <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-blue-600">{fleetData.standby}</div>
+                <div className="text-sm text-gray-600 dark:text-gray-300">Standby</div>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <h4 className="font-semibold text-lg">Trains in Maintenance</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {trains.filter(train => train.status === 'maintenance' || train.status === 'emergency').map((train) => (
+                  <div key={train.id} className={`flex items-center justify-between p-3 rounded-lg ${
+                    train.status === 'emergency' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-yellow-50 dark:bg-yellow-900/20'
+                  }`}>
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full ${
+                        train.status === 'emergency' ? 'bg-red-500' : 'bg-yellow-500'
+                      }`}></div>
+                      <div>
+                        <div className="font-semibold">{train.id}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{train.location}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold">Health: {train.health}%</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">{train.nextMaintenance}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-semibold text-lg">Tonight's Maintenance Schedule</h4>
+              <div className="space-y-2">
+                {maintenanceSchedule.map((task, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <div>
+                        <div className="font-semibold">{task.train}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-300">{task.type}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold">{task.startTime}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300">{task.duration}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
