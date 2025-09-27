@@ -224,7 +224,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-green-600">
                 {kpiSummary.punctuality.current}%
               </div>
-              <div className="text-sm text-gray-600">Punctuality</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Punctuality</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.punctuality.trend}
               </div>
@@ -235,7 +235,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-blue-600">
                 {kpiSummary.availability.current}%
               </div>
-              <div className="text-sm text-gray-600">Availability</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Availability</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.availability.trend}
               </div>
@@ -246,7 +246,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-purple-600">
                 {Math.round(kpiSummary.mtbf.current / 1000)}K
               </div>
-              <div className="text-sm text-gray-600">MTBF (km)</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">MTBF (km)</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.mtbf.trend}
               </div>
@@ -257,7 +257,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-orange-600">
                 ₹{kpiSummary.cost.current}L
               </div>
-              <div className="text-sm text-gray-600">Cost/Day</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Cost/Day</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.cost.trend}
               </div>
@@ -268,7 +268,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-cyan-600">
                 {kpiSummary.efficiency.current}%
               </div>
-              <div className="text-sm text-gray-600">Efficiency</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Efficiency</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.efficiency.trend}
               </div>
@@ -279,7 +279,7 @@ const Reports = () => {
               <div className="text-2xl font-bold text-red-600">
                 {kpiSummary.safety.current}%
               </div>
-              <div className="text-sm text-gray-600">Safety Score</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">Safety Score</div>
               <div className="text-xs text-green-600">
                 {kpiSummary.safety.trend}
               </div>
@@ -369,67 +369,67 @@ const Reports = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div className="p-4 bg-green-50 rounded-lg">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="font-semibold">
+                      <span className="font-semibold text-gray-900 dark:text-white">
                         Operational Excellence
                       </span>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm">On-time Performance</span>
-                        <span className="text-sm font-semibold">99.5%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">On-time Performance</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">99.5%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Service Reliability</span>
-                        <span className="text-sm font-semibold">98.7%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Service Reliability</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">98.7%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Fleet Availability</span>
-                        <span className="text-sm font-semibold">96.8%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Fleet Availability</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">96.8%</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <Target className="w-5 h-5 text-blue-600" />
-                      <span className="font-semibold">Asset Utilization</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">Asset Utilization</span>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm">Average Daily Distance</span>
-                        <span className="text-sm font-semibold">245 km</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Average Daily Distance</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">245 km</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Energy Efficiency</span>
-                        <span className="text-sm font-semibold">90.2%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Energy Efficiency</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">90.2%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Capacity Utilization</span>
-                        <span className="text-sm font-semibold">72%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Capacity Utilization</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">72%</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 bg-purple-50 rounded-lg">
+                  <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <Shield className="w-5 h-5 text-purple-600" />
-                      <span className="font-semibold">Safety & Quality</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">Safety & Quality</span>
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-sm">Safety Incidents</span>
-                        <span className="text-sm font-semibold">0</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Safety Incidents</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">0</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Quality Score</span>
-                        <span className="text-sm font-semibold">96.8%</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Quality Score</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">96.8%</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-sm">Passenger Satisfaction</span>
-                        <span className="text-sm font-semibold">4.7/5</span>
+                        <span className="text-sm text-gray-700 dark:text-gray-300">Passenger Satisfaction</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">4.7/5</span>
                       </div>
                     </div>
                   </div>

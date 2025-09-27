@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { 
   Train, 
   Search,
@@ -28,27 +29,22 @@ import {
   User,
   Zap,
   Shield,
-  TrendingUp,
   BarChart3
 } from "lucide-react";
 import { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 
-const TrainFleet = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTrain, setSelectedTrain] = useState("KRISHNA");
+// KMRL Train Names mapping
+const trainNames = [
+  "KRISHNA", "TAPTI", "NILA", "SARAYU", "ARUTH",
+  "VAIGAI", "JHANAVI", "DHWANIL", "BHAVANI", "PADMA",
+  "MANDAKINI", "YAMUNA", "PERIYAR", "KABANI", "VAAYU",
+  "KAVERI", "SHIRIYA", "PAMPA", "NARMADA", "MAHE",
+  "MAARUT", "SABARMATHI", "GODHAVARI", "GANGA", "PAVAN"
+];
 
-  // KMRL Train Names mapping
-  const trainNames = [
-    "KRISHNA", "TAPTI", "NILA", "SARAYU", "ARUTH",
-    "VAIGAI", "JHANAVI", "DHWANIL", "BHAVANI", "PADMA",
-    "MANDAKINI", "YAMUNA", "PERIYAR", "KABANI", "VAAYU",
-    "KAVERI", "SHIRIYA", "PAMPA", "NARMADA", "MAHE",
-    "MAARUT", "SABARMATHI", "GODHAVARI", "GANGA", "PAVAN"
-  ];
-
-  // Generate 25 trains data with real KMRL train names
-  const generateFleetData = () => {
+// Generate 25 trains data with real KMRL train names
+const generateFleetData = () => {
     const statuses = ["active", "maintenance", "inactive"];
     const locations = [
       "Aluva-Petta Route", "Palarivattom-Vytilla", "Edapally-JLN Stadium", 
@@ -87,7 +83,32 @@ const TrainFleet = () => {
     });
   };
 
-  const [fleetData] = useState(generateFleetData());
+const TrainDetails = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTrain, setSelectedTrain] = useState("KRISHNA");
+  const [fleetData, setFleetData] = useState(generateFleetData());
+  const [closeJobOpen, setCloseJobOpen] = useState(false);
+
+  // Function to close job and update train status to active
+  const closeJob = (trainId) => {
+    setFleetData(prevData => 
+      prevData.map(train => 
+        train.id === trainId 
+          ? { 
+              ...train, 
+              status: "active",
+              healthScore: Math.min(100, train.healthScore + 10), // Improve health after maintenance
+              maintenanceDue: Math.floor(Math.random() * 30 + 30), // Reset maintenance due
+              criticalIssues: 0, // Clear critical issues
+              cleaningStatus: "clean", // Mark as clean
+              currentSpeed: Math.floor(Math.random() * 40 + 10), // Set active speed
+              passengerLoad: Math.floor(Math.random() * 60 + 30) // Set passenger load
+            }
+          : train
+      )
+    );
+    setCloseJobOpen(false);
+  };
 
   const filteredTrains = fleetData.filter(train =>
     train.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -96,17 +117,6 @@ const TrainFleet = () => {
 
   const currentTrain = fleetData.find(train => train.id === selectedTrain) || fleetData[0];
 
-  // Performance data for selected train
-  const performanceData = [
-    { time: '06:00', speed: 28, energy: 120, passengers: 45 },
-    { time: '08:00', speed: 32, energy: 155, passengers: 85 },
-    { time: '10:00', speed: 35, energy: 140, passengers: 65 },
-    { time: '12:00', speed: 30, energy: 145, passengers: 70 },
-    { time: '14:00', speed: 33, energy: 150, passengers: 78 },
-    { time: '16:00', speed: 29, energy: 165, passengers: 92 },
-    { time: '18:00', speed: 31, energy: 175, passengers: 95 },
-    { time: '20:00', speed: 34, energy: 160, passengers: 82 }
-  ];
 
   const componentHealth = [
     { component: "Traction Motors", health: 92, nextService: 45, criticality: "low" },
@@ -293,6 +303,49 @@ const TrainFleet = () => {
                   </div>
                 </div>
                 <div className="flex gap-3">
+                  {currentTrain.status === "maintenance" && (
+                    <Dialog open={closeJobOpen} onOpenChange={setCloseJobOpen}>
+                      <DialogTrigger asChild>
+                        <Button className="bg-green-600 hover:bg-green-700">
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Close Job
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Close Maintenance Job</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <p className="text-gray-600 dark:text-gray-300">
+                            Are you sure you want to close the maintenance job for <strong>{currentTrain.id}</strong>? 
+                            This will change the train status to active and update its health metrics.
+                          </p>
+                          <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                            <h4 className="font-semibold mb-2">Changes that will be applied:</h4>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• Status: Maintenance → Active</li>
+                              <li>• Health Score: +10 points</li>
+                              <li>• Critical Issues: Cleared</li>
+                              <li>• Cleaning Status: Clean</li>
+                              <li>• Maintenance Due: Reset to 30-60 days</li>
+                            </ul>
+                          </div>
+                          <div className="flex justify-end gap-3">
+                            <Button variant="outline" onClick={() => setCloseJobOpen(false)}>
+                              Cancel
+                            </Button>
+                            <Button 
+                              className="bg-green-600 hover:bg-green-700"
+                              onClick={() => closeJob(currentTrain.id)}
+                            >
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                              Close Job
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
                   <Button variant="outline" size="sm">
                     <Download className="w-4 h-4 mr-2" />
                     Export
@@ -455,27 +508,6 @@ const TrainFleet = () => {
                 </Card>
               </div>
 
-              {/* Performance Chart */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Today's Performance Metrics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={performanceData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="time" />
-                      <YAxis />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="speed" stroke="#8884d8" name="Speed (km/h)" />
-                      <Line type="monotone" dataKey="passengers" stroke="#82ca9d" name="Passengers %" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
 
               {/* Component Health */}
               <Card>
@@ -641,4 +673,4 @@ const TrainFleet = () => {
   );
 };
 
-export default TrainFleet;
+export default TrainDetails;

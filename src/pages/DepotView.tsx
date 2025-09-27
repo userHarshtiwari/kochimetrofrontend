@@ -213,7 +213,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'service').map((bay) => (
-                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300 bg-white dark:bg-gray-800">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -242,7 +242,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'maintenance').map((bay) => (
-                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300 bg-white dark:bg-gray-800">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -272,7 +272,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'inspection').map((bay) => (
-                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300 bg-white dark:bg-gray-800">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -302,7 +302,7 @@ const DepotView = () => {
                 <CardContent>
                   <div className="space-y-3">
                     {bayLayout.filter(bay => bay.type === 'cleaning').map((bay) => (
-                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300">
+                      <div key={bay.id} id={`bay-${bay.id}`} className="p-3 border rounded-lg transition-all duration-300 bg-white dark:bg-gray-800">
                         <div className="flex justify-between items-center mb-2">
                           <div className="flex items-center gap-2">
                             <div className={`w-3 h-3 rounded-full ${getBayStatusColor(bay.status)}`}></div>
@@ -340,24 +340,24 @@ const DepotView = () => {
                           <div className="font-semibold text-lg">{shift.shift}</div>
                           <div className="text-gray-600 dark:text-gray-300">Supervisor: {shift.supervisor}</div>
                         </div>
-                        <Badge variant="outline" className="bg-blue-50">
+                        <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20">
                           Total: {shift.total} staff
                         </Badge>
                       </div>
                       <div className="grid grid-cols-4 gap-4">
-                        <div className="text-center p-3 bg-gray-50 rounded">
+                        <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
                           <div className="text-xl font-bold text-blue-600">{shift.technicians}</div>
                           <div className="text-sm text-gray-600 dark:text-gray-300">Technicians</div>
                         </div>
-                        <div className="text-center p-3 bg-gray-50 rounded">
+                        <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
                           <div className="text-xl font-bold text-green-600">{shift.cleaners}</div>
                           <div className="text-sm text-gray-600 dark:text-gray-300">Cleaners</div>
                         </div>
-                        <div className="text-center p-3 bg-gray-50 rounded">
+                        <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
                           <div className="text-xl font-bold text-purple-600">{shift.security}</div>
                           <div className="text-sm text-gray-600 dark:text-gray-300">Security</div>
                         </div>
-                        <div className="text-center p-3 bg-gray-50 rounded">
+                        <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
                           <div className="text-xl font-bold text-orange-600">1</div>
                           <div className="text-sm text-gray-600 dark:text-gray-300">Supervisor</div>
                         </div>
@@ -390,15 +390,15 @@ const DepotView = () => {
                         </div>
                       </div>
                       <div className="grid grid-cols-3 gap-4 mb-3">
-                        <div className="text-center p-2 bg-blue-50 rounded">
+                        <div className="text-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded">
                           <div className="font-bold text-blue-600">{equipment.total}</div>
                           <div className="text-xs text-gray-600 dark:text-gray-300">Total</div>
                         </div>
-                        <div className="text-center p-2 bg-green-50 rounded">
+                        <div className="text-center p-2 bg-green-50 dark:bg-green-900/20 rounded">
                           <div className="font-bold text-green-600">{equipment.operational}</div>
                           <div className="text-xs text-gray-600 dark:text-gray-300">Operational</div>
                         </div>
-                        <div className="text-center p-2 bg-yellow-50 rounded">
+                        <div className="text-center p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded">
                           <div className="font-bold text-yellow-600">{equipment.maintenance}</div>
                           <div className="text-xs text-gray-600 dark:text-gray-300">Maintenance</div>
                         </div>
@@ -461,11 +461,11 @@ const DepotView = () => {
                     </div>
                     <div className="text-gray-600 dark:text-gray-300 mb-4">Current Power Usage</div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="p-3 bg-blue-50 rounded">
+                      <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded">
                         <div className="font-bold text-blue-600">185 kW</div>
                         <div className="text-sm text-gray-600 dark:text-gray-300">Daily Average</div>
                       </div>
-                      <div className="p-3 bg-green-50 rounded">
+                      <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded">
                         <div className="font-bold text-green-600">92%</div>
                         <div className="text-sm text-gray-600 dark:text-gray-300">Efficiency</div>
                       </div>
@@ -489,10 +489,10 @@ const DepotView = () => {
                 <div className="space-y-3">
                   {todayActivities.map((activity, index) => (
                     <div key={index} className={`p-4 rounded-lg border-l-4 ${
-                      activity.status === 'urgent' ? 'border-red-500 bg-red-50' :
-                      activity.status === 'in-progress' ? 'border-blue-500 bg-blue-50' :
-                      activity.status === 'completed' ? 'border-green-500 bg-green-50' :
-                      'border-gray-500 bg-gray-50'
+                      activity.status === 'urgent' ? 'border-red-500 bg-red-50 dark:bg-red-900/20' :
+                      activity.status === 'in-progress' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' :
+                      activity.status === 'completed' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' :
+                      'border-gray-500 bg-gray-50 dark:bg-gray-800'
                     }`}>
                       <div className="flex justify-between items-start">
                         <div>

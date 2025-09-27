@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Logo } from "@/components/Logo";
 import { 
-  Train, 
   User, 
   Lock, 
   Eye, 
@@ -64,14 +64,8 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-blue-600 rounded-full">
-              <Train className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">KRITHYATHA</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">കൃത്യത</p>
-            </div>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <Logo size="lg" showText={true} />
           </div>
           <p className="text-gray-600 dark:text-gray-300">
             Metro Operations Management System
@@ -215,7 +209,7 @@ const Login = () => {
 
         {/* Footer */}
         <div className="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
-          <p>© 2024 KRITHYATHA Metro Operations</p>
+          <p>© 2024 Metro Operations</p>
           <p>Secure • Reliable • Efficient</p>
         </div>
       </div>

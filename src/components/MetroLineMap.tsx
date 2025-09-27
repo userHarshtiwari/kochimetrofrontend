@@ -219,7 +219,7 @@ const MetroLineMap = () => {
               <Activity className="w-4 h-4" />
               Active Trains
             </h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+            <div className="space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
               {activeTrains.filter(train => train.status === 'service').slice(0, 6).map((train) => (
                 <div key={train.id} className="flex items-center justify-between p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ const MetroLineMap = () => {
               <AlertTriangle className="w-4 h-4" />
               Issues & Delays
             </h4>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+            <div className="space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
               {activeTrains.filter(train => train.status === 'emergency' || train.delay > 0).map((train) => (
                 <div key={train.id} className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
                   <div className="flex items-center gap-2">

@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
+import { Logo } from '@/components/Logo';
 import { Train } from 'lucide-react';
 
 interface ProtectedRouteProps {
@@ -18,13 +19,7 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
         <Card className="w-96">
           <CardContent className="p-8 text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="p-3 bg-blue-600 rounded-full">
-                <Train className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">KRITHYATHA</h1>
-                <p className="text-sm text-gray-600 dark:text-gray-300">കൃത്യത</p>
-              </div>
+              <Logo size="lg" showText={true} />
             </div>
             <div className="flex items-center justify-center gap-2">
               <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
